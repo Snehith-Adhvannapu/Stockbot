@@ -47,7 +47,3 @@ args = "uv add yfinance requests beautifulsoup4 nltk spacy pandas numpy"
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 39747
-externalPort = 3000

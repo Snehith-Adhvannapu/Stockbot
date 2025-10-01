@@ -3,25 +3,15 @@ import time
 import pandas as pd
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
-from alpaca.data.historical import StockHistoricalDataClient
-from alpaca.data.requests import StockBarsRequest, StockLatestQuoteRequest
-from alpaca.data.timeframe import TimeFrame
 import threading
 
+from trading.data_provider import YFinanceDataProvider
+
 class MarketDataMonitor:
-    """Monitor live market data using Alpaca API"""
+    """Monitor live market data using YFinance for historical data and Alpaca for trading"""
     
     def __init__(self):
-        self.api_key = os.getenv("ALPACA_API_KEY")
-        self.secret_key = os.getenv("ALPACA_SECRET_KEY")
-        
-        if not self.api_key or not self.secret_key:
-            raise ValueError("Alpaca API credentials not found")
-        
-        self.data_client = StockHistoricalDataClient(
-            self.api_key,
-            self.secret_key
-        )
+        self.data_provider = YFinanceDataProvider()
         
         self.watchlist = []
         self.market_data_cache = {}
@@ -52,7 +42,7 @@ class MarketDataMonitor:
         days_back: int = 30
     ) -> pd.DataFrame:
         """
-        Get historical bar data for a symbol
+        Get historical bar data for a symbol using YFinance
         
         Args:
             symbol: Stock ticker
@@ -60,66 +50,28 @@ class MarketDataMonitor:
             days_back: Number of days to look back
         
         Returns:
-            DataFrame with OHLCV data
+            DataFrame with columns: timestamp, open, high, low, close, volume
         """
-        try:
-            timeframe_map = {
-                '1Min': TimeFrame.Minute,
-                '5Min': TimeFrame(5, 'Minute'),
-                '15Min': TimeFrame(15, 'Minute'),
-                '1Hour': TimeFrame.Hour,
-                '1Day': TimeFrame.Day
-            }
-            
-            tf = timeframe_map.get(timeframe, TimeFrame.Hour)
-            
-            end_date = datetime.now()
-            start_date = end_date - timedelta(days=days_back)
-            
-            request_params = StockBarsRequest(
-                symbol_or_symbols=symbol,
-                timeframe=tf,
-                start=start_date,
-                end=end_date
-            )
-            
-            bars = self.data_client.get_stock_bars(request_params)
-            
-            if symbol in bars:
-                df = bars[symbol].df
-                df.reset_index(inplace=True)
-                df.columns = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'trade_count', 'vwap']
-                return df
-            else:
-                return pd.DataFrame()
-                
-        except Exception as e:
-            print(f"Error fetching historical data for {symbol}: {e}")
-            return pd.DataFrame()
+        return self.data_provider.get_historical_bars(symbol, timeframe, days_back)
     
     def get_latest_quote(self, symbol: str) -> Optional[Dict]:
-        """Get latest quote for a symbol"""
-        try:
-            request_params = StockLatestQuoteRequest(symbol_or_symbols=symbol)
-            quotes = self.data_client.get_stock_latest_quote(request_params)
-            
-            if symbol in quotes:
-                quote = quotes[symbol]
-                return {
-                    'symbol': symbol,
-                    'ask_price': float(quote.ask_price),
-                    'ask_size': float(quote.ask_size),
-                    'bid_price': float(quote.bid_price),
-                    'bid_size': float(quote.bid_size),
-                    'timestamp': quote.timestamp,
-                    'mid_price': (float(quote.ask_price) + float(quote.bid_price)) / 2
-                }
-            else:
-                return None
-                
-        except Exception as e:
-            print(f"Error fetching quote for {symbol}: {e}")
-            return None
+        """Get latest quote for a symbol using YFinance"""
+        quote = self.data_provider.get_latest_quote(symbol)
+        
+        if quote and quote.get('price', 0) > 0:
+            return {
+                'symbol': symbol,
+                'ask_price': quote['ask'],
+                'bid_price': quote['bid'],
+                'mid_price': quote['price'],
+                'timestamp': datetime.now()
+            }
+        
+        return None
+    
+    def get_batch_quotes(self, symbols: List[str]) -> List[Dict]:
+        """Get latest quotes for multiple symbols"""
+        return self.data_provider.get_batch_quotes(symbols)
     
     def update_market_data(self):
         """Update market data for all symbols in watchlist"""

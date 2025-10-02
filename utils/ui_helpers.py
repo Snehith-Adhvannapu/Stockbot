@@ -60,11 +60,24 @@ def apply_global_styles():
         .main {{
             background: {theme['bg_primary']};
             color: {theme['text_primary']};
+            animation: fadeIn 0.3s ease-in;
         }}
         
         .block-container {{
             background: transparent;
             color: {theme['text_primary']};
+            animation: fadeIn 0.3s ease-in;
+        }}
+        
+        @keyframes fadeIn {{
+            from {{
+                opacity: 0;
+                transform: translateY(10px);
+            }}
+            to {{
+                opacity: 1;
+                transform: translateY(0);
+            }}
         }}
         
         h1, h2, h3, h4, h5, h6 {{

@@ -210,9 +210,10 @@ if __name__ == "__main__":
                 dashboard.show()
     else:
         dark_mode = st.session_state.get('dark_mode', True)
-        col1, col2 = st.columns([5, 1])
-        with col2:
+        col1, col2, col3 = st.columns([1, 10, 1])
+        with col3:
             if st.button("☀️" if dark_mode else "🌙", key="theme_toggle_main"):
                 st.session_state.dark_mode = not st.session_state.dark_mode
                 st.rerun()
-        main()
+        with col2:
+            main()

@@ -19,7 +19,7 @@ def main():
     
     st.markdown("""
     <div style='text-align: center; padding: 2rem 0;'>
-        <div class='logo' style='font-size: 2rem;'>STOCKBOT AI</div>
+        <div class='logo' style='font-size: 2rem;'>Algora</div>
         <h1 style='font-size: 2.5rem; margin: 0;'>Stock Trading Platform</h1>
         <p style='font-size: 1.2rem; margin-top: 0.5rem;'>
             AI-Powered Trading Made Simple

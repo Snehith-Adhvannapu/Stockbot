@@ -195,7 +195,7 @@ def render_sidebar_header():
     theme = get_theme()
     dark_mode = st.session_state.get('dark_mode', True)
     
-    st.markdown("<div class='logo'>STOCKBOT AI</div>", unsafe_allow_html=True)
+    st.markdown("<div class='logo'>Algora</div>", unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     

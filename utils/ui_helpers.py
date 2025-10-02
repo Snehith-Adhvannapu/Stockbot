@@ -90,21 +90,31 @@ def apply_global_styles():
         [data-testid="stSidebar"] button {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
-            border: 1px solid {theme['border']} !important;
+            border: 1.5px solid {theme['border']} !important;
             border-radius: 8px;
             transition: all 0.2s ease;
             margin-bottom: 0.5rem;
+            font-weight: 500;
         }}
         
         [data-testid="stSidebar"] button:hover {{
-            background: {theme['hover_bg']} !important;
+            background: {theme['bg_secondary']} !important;
             border-color: {theme['accent_primary']} !important;
             transform: translateX(3px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }}
         
         [data-testid="stSidebar"] button[kind="primary"] {{
             background: linear-gradient(135deg, {theme['accent_primary']} 0%, {theme['accent_secondary']} 100%) !important;
             color: white !important;
+            border: none !important;
+            font-weight: 600;
+        }}
+        
+        [data-testid="stSidebar"] button[kind="secondary"] {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1.5px solid rgba(102, 126, 234, 0.3) !important;
         }}
         
         .stButton button {{
@@ -195,7 +205,7 @@ def render_sidebar_header():
             st.session_state.dark_mode = not st.session_state.dark_mode
             st.rerun()
     with col2:
-        if st.button("🏠 Home", use_container_width=True, key="nav_home"):
+        if st.button("🏠", use_container_width=True, key="nav_home"):
             st.session_state.selected_mode = None
             st.session_state.selected_page = None
             st.rerun()

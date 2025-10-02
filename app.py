@@ -154,20 +154,23 @@ if __name__ == "__main__":
             ai_advisor.show()
         
         elif mode == 'auto_trading':
-            st.sidebar.markdown("### Trading Platform")
+            sidebar_collapsed = st.session_state.get('sidebar_collapsed', False)
+            
+            if not sidebar_collapsed:
+                st.sidebar.markdown("### Trading Platform")
             
             current_page = st.session_state.get('selected_page', 'dashboard')
             
             pages = {
-                "Dashboard": 'dashboard',
-                "Trading Bot": 'auto_trading',
-                "Portfolio": 'portfolio',
-                "Watchlist": 'watchlist',
-                "Charts": 'charts',
-                "Scanner": 'scanner',
-                "Patterns": 'patterns',
-                "Backtest": 'backtesting',
-                "Help": 'help'
+                "📊 Dashboard" if not sidebar_collapsed else "📊": 'dashboard',
+                "🤖 Trading Bot" if not sidebar_collapsed else "🤖": 'auto_trading',
+                "💼 Portfolio" if not sidebar_collapsed else "💼": 'portfolio',
+                "👁️ Watchlist" if not sidebar_collapsed else "👁️": 'watchlist',
+                "📈 Charts" if not sidebar_collapsed else "📈": 'charts',
+                "🔍 Scanner" if not sidebar_collapsed else "🔍": 'scanner',
+                "🎯 Patterns" if not sidebar_collapsed else "🎯": 'patterns',
+                "⏮️ Backtest" if not sidebar_collapsed else "⏮️": 'backtesting',
+                "❓ Help" if not sidebar_collapsed else "❓": 'help'
             }
             
             for label, page_id in pages.items():

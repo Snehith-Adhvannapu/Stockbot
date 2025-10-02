@@ -185,15 +185,23 @@ def render_sidebar_header():
     theme = get_theme()
     dark_mode = st.session_state.get('dark_mode', True)
     
+    if 'sidebar_collapsed' not in st.session_state:
+        st.session_state.sidebar_collapsed = False
+    
     st.markdown("<div class='logo'>STOCKBOT AI</div>", unsafe_allow_html=True)
     
-    col1, col2 = st.columns([1, 1])
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col1:
         if st.button("☀️" if dark_mode else "🌙", key="theme_toggle", use_container_width=True):
             st.session_state.dark_mode = not st.session_state.dark_mode
             st.rerun()
     with col2:
-        if st.button("🏠 Home", use_container_width=True, key="nav_home"):
+        collapse_icon = "◀" if st.session_state.sidebar_collapsed else "▶"
+        if st.button(collapse_icon, key="sidebar_collapse", use_container_width=True):
+            st.session_state.sidebar_collapsed = not st.session_state.sidebar_collapsed
+            st.rerun()
+    with col3:
+        if st.button("🏠", use_container_width=True, key="nav_home"):
             st.session_state.selected_mode = None
             st.session_state.selected_page = None
             st.rerun()

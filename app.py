@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.ui_helpers import apply_global_styles, render_sidebar_header, get_theme
 
 st.set_page_config(
     page_title="Stock Trading Platform",
@@ -10,153 +11,17 @@ st.set_page_config(
 if 'dark_mode' not in st.session_state:
     st.session_state.dark_mode = True
 
-dark_mode = st.session_state.dark_mode
-
-if dark_mode:
-    bg_gradient = "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)"
-    card_bg = "rgba(30, 30, 46, 0.95)"
-    text_color = "#e0e0e0"
-    sidebar_bg = "linear-gradient(180deg, #0f0f1e 0%, #1a1a2e 100%)"
-    mode_card_bg = "linear-gradient(135deg, #2a2a3e 0%, #1f1f2e 100%)"
-else:
-    bg_gradient = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-    card_bg = "rgba(255, 255, 255, 0.95)"
-    text_color = "#1a1a2e"
-    sidebar_bg = "linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%)"
-    mode_card_bg = "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)"
-
-st.markdown(f"""
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
-    * {{
-        font-family: 'Inter', sans-serif;
-    }}
-    
-    .main {{
-        padding: 1rem;
-        background: {bg_gradient};
-        background-attachment: fixed;
-    }}
-    
-    .stApp {{
-        background: transparent;
-    }}
-    
-    .block-container {{
-        background: {card_bg};
-        border-radius: 20px;
-        padding: 2rem;
-        backdrop-filter: blur(10px);
-        color: {text_color};
-    }}
-    
-    .stButton button {{
-        border-radius: 10px;
-        font-weight: 500;
-        padding: 0.7rem 1.5rem;
-        border: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }}
-    
-    .stButton button:hover {{
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }}
-    
-    div[data-testid="stSidebar"] {{
-        background: {sidebar_bg};
-        border-right: 1px solid rgba(255,255,255,0.1);
-    }}
-    
-    div[data-testid="stSidebar"] button {{
-        margin-bottom: 0.5rem;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-        background: rgba(255,255,255,0.1);
-        color: white;
-        border: 1px solid rgba(255,255,255,0.2);
-    }}
-    
-    div[data-testid="stSidebar"] button:hover {{
-        background: rgba(255,255,255,0.2);
-        transform: translateX(3px);
-    }}
-    
-    div[data-testid="stSidebar"] .stMarkdown {{
-        color: #ffffff;
-    }}
-    
-    div[data-testid="stSidebar"] h2 {{
-        color: #ffffff;
-        font-size: 1.1rem;
-        margin-top: 1rem;
-    }}
-    
-    h1 {{
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }}
-    
-    .mode-card {{
-        background: {mode_card_bg};
-        border-radius: 15px;
-        padding: 2rem;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        height: 100%;
-    }}
-    
-    .mode-card:hover {{
-        transform: translateY(-10px);
-        border-color: #667eea;
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-    }}
-    
-    .feature-box {{
-        background: {'rgba(40, 40, 56, 0.5)' if dark_mode else 'white'};
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 0.5rem 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        transition: all 0.2s ease;
-    }}
-    
-    .feature-box:hover {{
-        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    }}
-    
-    .stMetric {{
-        background: {'rgba(40, 40, 56, 0.5)' if dark_mode else 'white'};
-        padding: 1rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }}
-    
-    .logo {{
-        font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 1rem;
-    }}
-</style>
-""", unsafe_allow_html=True)
+apply_global_styles()
 
 def main():
     """Main landing page"""
+    theme = get_theme()
+    
     st.markdown("""
     <div style='text-align: center; padding: 2rem 0;'>
-        <div class='logo'>STOCKBOT AI</div>
+        <div class='logo' style='font-size: 2rem;'>STOCKBOT AI</div>
         <h1 style='font-size: 2.5rem; margin: 0;'>Stock Trading Platform</h1>
-        <p style='font-size: 1.2rem; color: #888; margin-top: 0.5rem;'>
+        <p style='font-size: 1.2rem; margin-top: 0.5rem;'>
             AI-Powered Trading Made Simple
         </p>
     </div>
@@ -168,10 +33,12 @@ def main():
     
     with col1:
         st.markdown(f"""
-        <div class='mode-card'>
+        <div style='background: {theme['card_bg']}; border-radius: 15px; padding: 2rem; 
+             text-align: center; border: 2px solid {theme['border']}; 
+             transition: all 0.3s ease; height: 100%;'>
             <div style='font-size: 3rem; margin-bottom: 1rem;'>🧠</div>
             <h2 style='color: #667eea; margin-bottom: 1rem;'>AI Stock Advisor</h2>
-            <p style='font-size: 1.1rem; line-height: 1.6; color: {'#bbb' if dark_mode else '#555'};'>
+            <p style='font-size: 1.1rem; line-height: 1.6; color: {theme['text_secondary']};'>
                 Get intelligent stock recommendations powered by AI sentiment analysis 
                 and fundamental research. Make smarter investment decisions.
             </p>
@@ -190,10 +57,12 @@ def main():
     
     with col2:
         st.markdown(f"""
-        <div class='mode-card'>
+        <div style='background: {theme['card_bg']}; border-radius: 15px; padding: 2rem; 
+             text-align: center; border: 2px solid {theme['border']}; 
+             transition: all 0.3s ease; height: 100%;'>
             <div style='font-size: 3rem; margin-bottom: 1rem;'>🤖</div>
             <h2 style='color: #764ba2; margin-bottom: 1rem;'>Autonomous Trading Bot</h2>
-            <p style='font-size: 1.1rem; line-height: 1.6; color: {'#bbb' if dark_mode else '#555'};'>
+            <p style='font-size: 1.1rem; line-height: 1.6; color: {theme['text_secondary']};'>
                 Set up a fully automated trading system that monitors markets and 
                 executes trades 24/7. Let AI handle the trading for you.
             </p>
@@ -212,9 +81,9 @@ def main():
     
     st.markdown("<br><br>", unsafe_allow_html=True)
     
-    st.markdown(f"""
+    st.markdown("""
     <div style='text-align: center; margin: 2rem 0;'>
-        <h2 style='color: {text_color};'>Platform Features</h2>
+        <h2>Platform Features</h2>
     </div>
     """, unsafe_allow_html=True)
     
@@ -222,10 +91,11 @@ def main():
     
     with col1:
         st.markdown(f"""
-        <div class='feature-box'>
+        <div style='background: {theme['card_bg']}; border-radius: 12px; padding: 1.5rem; 
+             margin: 0.5rem 0; border: 1px solid {theme['border']}; transition: all 0.2s ease;'>
             <div style='font-size: 2rem; margin-bottom: 0.5rem;'>📊</div>
             <h3 style='color: #667eea;'>Real-time Data</h3>
-            <ul style='text-align: left; color: {'#bbb' if dark_mode else '#555'};'>
+            <ul style='text-align: left; color: {theme['text_secondary']};'>
                 <li>Live stock prices</li>
                 <li>Market news updates</li>
                 <li>Sentiment analysis</li>
@@ -236,10 +106,11 @@ def main():
     
     with col2:
         st.markdown(f"""
-        <div class='feature-box'>
+        <div style='background: {theme['card_bg']}; border-radius: 12px; padding: 1.5rem; 
+             margin: 0.5rem 0; border: 1px solid {theme['border']}; transition: all 0.2s ease;'>
             <div style='font-size: 2rem; margin-bottom: 0.5rem;'>🎯</div>
             <h3 style='color: #667eea;'>Smart Analysis</h3>
-            <ul style='text-align: left; color: {'#bbb' if dark_mode else '#555'};'>
+            <ul style='text-align: left; color: {theme['text_secondary']};'>
                 <li>AI recommendations</li>
                 <li>Pattern detection</li>
                 <li>Strategy backtesting</li>
@@ -250,10 +121,11 @@ def main():
     
     with col3:
         st.markdown(f"""
-        <div class='feature-box'>
+        <div style='background: {theme['card_bg']}; border-radius: 12px; padding: 1.5rem; 
+             margin: 0.5rem 0; border: 1px solid {theme['border']}; transition: all 0.2s ease;'>
             <div style='font-size: 2rem; margin-bottom: 0.5rem;'>🛡️</div>
             <h3 style='color: #667eea;'>Risk Management</h3>
-            <ul style='text-align: left; color: {'#bbb' if dark_mode else '#555'};'>
+            <ul style='text-align: left; color: {theme['text_secondary']};'>
                 <li>Paper trading mode</li>
                 <li>Automated stop-loss</li>
                 <li>Position sizing</li>
@@ -273,20 +145,7 @@ if __name__ == "__main__":
     
     if mode:
         with st.sidebar:
-            st.markdown("<div class='logo' style='text-align: center; font-size: 1.5rem;'>STOCKBOT AI</div>", unsafe_allow_html=True)
-            
-            col1, col2 = st.columns([1, 1])
-            with col1:
-                if st.button("☀️" if dark_mode else "🌙", key="theme_toggle", use_container_width=True):
-                    st.session_state.dark_mode = not st.session_state.dark_mode
-                    st.rerun()
-            with col2:
-                if st.button("Home", use_container_width=True, key="nav_home"):
-                    st.session_state.selected_mode = None
-                    st.session_state.selected_page = None
-                    st.rerun()
-            
-            st.markdown("---")
+            render_sidebar_header()
         
         if mode == 'ai_advisor':
             st.sidebar.markdown("### AI Advisor")
@@ -350,6 +209,7 @@ if __name__ == "__main__":
                 from pages import dashboard
                 dashboard.show()
     else:
+        dark_mode = st.session_state.get('dark_mode', True)
         col1, col2 = st.columns([5, 1])
         with col2:
             if st.button("☀️" if dark_mode else "🌙", key="theme_toggle_main"):

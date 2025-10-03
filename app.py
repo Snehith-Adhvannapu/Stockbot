@@ -147,10 +147,23 @@ if __name__ == "__main__":
         st.markdown("""
         <style>
         [data-testid="stSidebar"] {
-            display: block !important;
+            transform: translateX(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
         }
         section[data-testid="stSidebar"] {
-            display: block !important;
+            transform: translateX(0) !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        [data-testid="stAppViewContainer"] {
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .main {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .block-container {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         </style>
         """, unsafe_allow_html=True)
@@ -223,24 +236,33 @@ if __name__ == "__main__":
         st.markdown("""
         <style>
         [data-testid="stSidebar"] {
-            display: none !important;
+            transform: translateX(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: fixed !important;
         }
         [data-testid="stSidebarNav"] {
-            display: none !important;
+            pointer-events: none !important;
         }
         section[data-testid="stSidebar"] {
-            display: none !important;
+            transform: translateX(-100%) !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: fixed !important;
         }
         [data-testid="stAppViewContainer"] {
             margin-left: 0 !important;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .main {
             margin-left: 0 !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         .block-container {
             max-width: 100% !important;
             padding-left: 5rem !important;
             padding-right: 5rem !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
         </style>
         """, unsafe_allow_html=True)

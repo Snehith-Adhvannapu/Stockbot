@@ -81,7 +81,11 @@ def apply_global_styles():
         }}
         
         section[data-testid="stSidebar"] {{
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }}
+        
+        [data-testid="stAppViewContainer"] {{
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }}
         
         h1, h2, h3, h4, h5, h6 {{
@@ -109,7 +113,7 @@ def apply_global_styles():
             color: {theme['text_primary']} !important;
             border: 1.5px solid {theme['border']} !important;
             border-radius: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             margin-bottom: 0.5rem;
             font-weight: 500;
         }}
@@ -117,8 +121,12 @@ def apply_global_styles():
         [data-testid="stSidebar"] button:hover {{
             background: {theme['bg_secondary']} !important;
             border-color: {theme['accent_primary']} !important;
-            transform: translateX(3px);
+            transform: translateX(2px);
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }}
+        
+        [data-testid="stSidebar"] button:active {{
+            transform: translateX(0);
         }}
         
         [data-testid="stSidebar"] button[kind="primary"] {{

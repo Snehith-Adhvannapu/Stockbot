@@ -197,14 +197,157 @@ def apply_global_styles():
         }}
         
         .stDataFrame {{
-            background: {theme['card_bg']};
+            background: {theme['card_bg']} !important;
             border-radius: 8px;
         }}
         
-        .stTextInput input, .stSelectbox select, .stMultiSelect {{
+        .stDataFrame div {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        .stDataFrame table {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stDataFrame th {{
+            background: {theme['bg_secondary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        .stDataFrame td {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        [data-testid="stDataFrame"] {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        [data-testid="stDataFrame"] div {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        .dataframe {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .dataframe thead tr {{
+            background: {theme['bg_secondary']} !important;
+        }}
+        
+        .dataframe tbody tr {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        .dataframe th {{
+            background: {theme['bg_secondary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        .dataframe td {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        .stTextInput input, .stTextInput input:focus {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
+            border-radius: 8px !important;
+        }}
+        
+        .stSelectbox select, .stSelectbox select:focus {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1px solid {theme['border']} !important;
+            border-radius: 8px !important;
+        }}
+        
+        .stMultiSelect {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1px solid {theme['border']} !important;
+            border-radius: 8px !important;
+        }}
+        
+        .stTextArea textarea, .stTextArea textarea:focus {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1px solid {theme['border']} !important;
+            border-radius: 8px !important;
+        }}
+        
+        .stNumberInput input, .stNumberInput input:focus {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1px solid {theme['border']} !important;
+            border-radius: 8px !important;
+        }}
+        
+        .stDateInput input, .stDateInput input:focus {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1px solid {theme['border']} !important;
+            border-radius: 8px !important;
+        }}
+        
+        [data-baseweb="input"] {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        [data-baseweb="select"] {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        [data-baseweb="base-input"] {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        input {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1px solid {theme['border']} !important;
+        }}
+        
+        textarea {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1px solid {theme['border']} !important;
+        }}
+        
+        select {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border: 1px solid {theme['border']} !important;
+        }}
+        
+        .stTable {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        .stTable table {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stTable th {{
+            background: {theme['bg_secondary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        .stTable td {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
         }}
         
         [data-testid="stHeader"] {{

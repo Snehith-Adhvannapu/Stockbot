@@ -5,7 +5,7 @@ st.set_page_config(
     page_title="Stock Trading Platform",
     page_icon="📈",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="auto"
 )
 
 if 'dark_mode' not in st.session_state:
@@ -209,6 +209,15 @@ if __name__ == "__main__":
                 from pages import dashboard
                 dashboard.show()
     else:
+        st.markdown("""
+        <script>
+        const sidebar = window.parent.document.querySelector('[data-testid="stSidebar"]');
+        if (sidebar) {
+            sidebar.style.display = 'none';
+        }
+        </script>
+        """, unsafe_allow_html=True)
+        
         dark_mode = st.session_state.get('dark_mode', True)
         
         col_spacer, col_button = st.columns([20, 1])

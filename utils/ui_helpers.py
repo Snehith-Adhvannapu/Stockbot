@@ -60,50 +60,28 @@ def apply_global_styles():
         .main {{
             background: {theme['bg_primary']};
             color: {theme['text_primary']};
-            animation: slideIn 0.4s ease-out;
+            animation: fadeInContent 0.3s ease-out;
         }}
         
         .block-container {{
             background: transparent;
             color: {theme['text_primary']};
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeInContent 0.3s ease-out;
         }}
         
-        @keyframes fadeIn {{
+        @keyframes fadeInContent {{
             from {{
                 opacity: 0;
-                transform: scale(0.95);
+                transform: translateY(10px);
             }}
             to {{
                 opacity: 1;
-                transform: scale(1);
-            }}
-        }}
-        
-        @keyframes slideIn {{
-            from {{
-                opacity: 0;
-                transform: translateX(-20px);
-            }}
-            to {{
-                opacity: 1;
-                transform: translateX(0);
+                transform: translateY(0);
             }}
         }}
         
         section[data-testid="stSidebar"] {{
-            animation: slideInLeft 0.3s ease-out;
-        }}
-        
-        @keyframes slideInLeft {{
-            from {{
-                opacity: 0;
-                transform: translateX(-30px);
-            }}
-            to {{
-                opacity: 1;
-                transform: translateX(0);
-            }}
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }}
         
         h1, h2, h3, h4, h5, h6 {{
@@ -160,22 +138,31 @@ def apply_global_styles():
             border-radius: 10px;
             font-weight: 500;
             padding: 0.7rem 1.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             background: {theme['bg_tertiary']};
             color: {theme['text_primary']};
             border: 1px solid {theme['border']};
         }}
         
         .stButton button:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             border-color: {theme['accent_primary']};
+        }}
+        
+        .stButton button:active {{
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }}
         
         .stButton button[kind="primary"] {{
             background: linear-gradient(135deg, {theme['accent_primary']} 0%, {theme['accent_secondary']} 100%);
             color: white;
             border: none;
+        }}
+        
+        .stButton button[kind="primary"]:hover {{
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
         }}
         
         .metric-card {{

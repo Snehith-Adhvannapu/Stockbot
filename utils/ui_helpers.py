@@ -226,6 +226,14 @@ def apply_global_styles():
             text-align: center;
             margin-bottom: 1rem;
         }}
+        
+        [data-testid="stIconMaterial"] {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .st-emotion-cache-rw2m0o {{
+            color: {theme['text_primary']} !important;
+        }}
     </style>
     """, unsafe_allow_html=True)
 

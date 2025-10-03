@@ -6,10 +6,13 @@ from trading.market_monitor import MarketDataMonitor
 from trading.technical_indicators import TechnicalIndicators
 
 def show():
-    st.markdown("""
+    from utils.ui_helpers import get_theme
+    theme = get_theme()
+    
+    st.markdown(f"""
     <div style='text-align: center; padding: 1.5rem 0;'>
         <h1 style='font-size: 2.5rem; margin: 0;'>🔍 Market Scanner</h1>
-        <p style='color: #666; font-size: 1.1rem;'>Discover trading opportunities in real-time</p>
+        <p style='color: {theme['text_secondary']}; font-size: 1.1rem;'>Discover trading opportunities in real-time</p>
     </div>
     """, unsafe_allow_html=True)
     

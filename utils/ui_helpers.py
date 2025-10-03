@@ -350,6 +350,133 @@ def apply_global_styles():
             border-color: {theme['border']} !important;
         }}
         
+        div[data-baseweb="select"] > div {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        div[data-baseweb="select"] {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        div[role="button"][aria-haspopup="listbox"] {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        div[data-baseweb="popover"] {{
+            background: {theme['bg_secondary']} !important;
+        }}
+        
+        ul[role="listbox"] {{
+            background: {theme['bg_secondary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        li[role="option"] {{
+            background: {theme['bg_secondary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        li[role="option"]:hover {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['accent_primary']} !important;
+        }}
+        
+        div[data-baseweb="menu"] {{
+            background: {theme['bg_secondary']} !important;
+        }}
+        
+        div[data-baseweb="menu"] li {{
+            background: {theme['bg_secondary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        div[data-baseweb="menu"] li:hover {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        .stSelectbox > div > div {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        .stMultiSelect > div > div {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+            border-color: {theme['border']} !important;
+        }}
+        
+        [data-baseweb="tag"] {{
+            background: {theme['accent_primary']} !important;
+            color: white !important;
+        }}
+        
+        .st-emotion-cache-1gulkj5 {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .st-emotion-cache-1gulkj5 > div {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        [class*="st-emotion-cache"] div[data-baseweb="select"] {{
+            background: {theme['bg_tertiary']} !important;
+        }}
+        
+        [class*="st-emotion-cache"] div[role="button"] {{
+            background: {theme['bg_tertiary']} !important;
+            color: {theme['text_primary']} !important;
+        }}
+        
+        [data-testid="stMarkdownContainer"] p {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stRadio > div {{
+            background: transparent !important;
+        }}
+        
+        .stRadio label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stCheckbox label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stSlider label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stNumberInput label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stTextInput label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stSelectbox label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stMultiSelect label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stTextArea label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
+        .stDateInput label {{
+            color: {theme['text_primary']} !important;
+        }}
+        
         [data-testid="stHeader"] {{
             background: transparent;
         }}

@@ -144,6 +144,17 @@ if __name__ == "__main__":
     mode = st.session_state.selected_mode
     
     if mode:
+        st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: block !important;
+        }
+        section[data-testid="stSidebar"] {
+            display: block !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
         with st.sidebar:
             render_sidebar_header()
         
@@ -210,12 +221,28 @@ if __name__ == "__main__":
                 dashboard.show()
     else:
         st.markdown("""
-        <script>
-        const sidebar = window.parent.document.querySelector('[data-testid="stSidebar"]');
-        if (sidebar) {
-            sidebar.style.display = 'none';
+        <style>
+        [data-testid="stSidebar"] {
+            display: none !important;
         }
-        </script>
+        [data-testid="stSidebarNav"] {
+            display: none !important;
+        }
+        section[data-testid="stSidebar"] {
+            display: none !important;
+        }
+        [data-testid="stAppViewContainer"] {
+            margin-left: 0 !important;
+        }
+        .main {
+            margin-left: 0 !important;
+        }
+        .block-container {
+            max-width: 100% !important;
+            padding-left: 5rem !important;
+            padding-right: 5rem !important;
+        }
+        </style>
         """, unsafe_allow_html=True)
         
         dark_mode = st.session_state.get('dark_mode', True)

@@ -124,8 +124,18 @@ def show():
                     status_text.text(f"Analyzing {stock} ({idx + 1}/{len(stocks_to_analyze)})...")
                     
                     try:
-                        sentiment_result = sentiment_agent.analyze(symbol)
-                        fundamental_result = fundamental_agent.analyze(symbol)
+                        sentiment_result = sentiment_agent.analyze_sentiment(symbol, stock)
+                        fundamental_result = fundamental_agent.analyze_stock(symbol)
+                        
+                        final_recommendation = aggregator_agent.aggregate_scores(
+                            ticker=symbol,
+                            company_name=stock,
+                            screening_data={},
+                            fundamental_data=fundamental_result,
+                            sentiment_data=sentiment_result,
+                            fundamental_weight=fundamental_weight,
+                            sentiment_weight=sentiment_weight
+                        )
                         
                         analysis_results = {
                             'symbol': stock,
@@ -136,8 +146,6 @@ def show():
                                 'fundamental': fundamental_weight
                             }
                         }
-                        
-                        final_recommendation = aggregator_agent.aggregate(analysis_results)
                         
                         all_results.append({
                             'stock': stock,
@@ -190,7 +198,7 @@ def show():
         
         chart_data = []
         for r in results:
-            score = r['recommendation'].get('score', 0) * 100
+            score = r['recommendation'].get('overall_score', 50)
             recommendation = r['recommendation'].get('recommendation', 'HOLD')
             
             color = '#00C853' if recommendation == 'BUY' else '#FFC107' if recommendation == 'HOLD' else '#FF5252'
@@ -236,8 +244,8 @@ def show():
             analysis = r['analysis']
             
             recommendation = rec.get('recommendation', 'HOLD')
-            score = rec.get('score', 0) * 100
-            confidence = rec.get('confidence', 0) * 100
+            score = rec.get('overall_score', 50)
+            confidence = score
             
             if recommendation == 'BUY':
                 color = "green"
@@ -260,42 +268,25 @@ def show():
                     st.metric("Confidence", f"{confidence:.1f}%")
                 
                 st.markdown("**Summary:**")
-                st.info(rec.get('summary', 'No summary available'))
+                st.info(rec.get('reasoning', 'No summary available'))
                 
                 col1, col2 = st.columns(2)
                 
                 with col1:
                     st.markdown("**📊 Fundamental Analysis**")
-                    fundamental_data = analysis.get('fundamental', {})
+                    fundamental_score = rec.get('fundamental_score', 0)
+                    st.write(f"Score: {fundamental_score:.1f}/100")
                     
-                    if fundamental_data and 'error' not in fundamental_data:
-                        fundamental_score = fundamental_data.get('fundamental_score', 0)
-                        st.write(f"Score: {fundamental_score:.1f}/10")
-                        
-                        metrics = fundamental_data.get('metrics', {})
-                        if metrics:
-                            st.write(f"P/E Ratio: {metrics.get('pe_ratio', 'N/A')}")
-                            st.write(f"Market Cap: {metrics.get('market_cap', 'N/A')}")
-                            st.write(f"EPS: {metrics.get('eps', 'N/A')}")
-                    else:
-                        st.write("Data unavailable")
+                    st.write(f"P/E Ratio: {rec.get('pe_ratio', 'N/A')}")
+                    st.write(f"Market Cap: {rec.get('market_cap', 'N/A')}")
+                    st.write(f"ROE: {rec.get('roe', 'N/A')}")
                 
                 with col2:
                     st.markdown("**💭 Sentiment Analysis**")
-                    sentiment_data = analysis.get('sentiment', {})
-                    
-                    if sentiment_data and 'error' not in sentiment_data:
-                        sentiment_score = sentiment_data.get('sentiment_score', 0)
-                        st.write(f"Score: {sentiment_score:.2f}")
-                        st.write(f"News Articles: {sentiment_data.get('num_articles', 0)}")
-                        st.write(f"Avg Sentiment: {sentiment_data.get('avg_sentiment', 0):.2f}")
-                    else:
-                        st.write("Data unavailable")
-                
-                if rec.get('reasoning'):
-                    st.markdown("**Reasoning:**")
-                    for reason in rec['reasoning']:
-                        st.write(f"• {reason}")
+                    sentiment_score = rec.get('sentiment_score', 0)
+                    st.write(f"Score: {sentiment_score:.1f}/100")
+                    st.write(f"News Articles: {rec.get('total_articles', 0)}")
+                    st.write(f"Avg Sentiment: {rec.get('avg_sentiment', 0):.2f}")
         
         st.markdown("---")
         
@@ -311,8 +302,7 @@ def show():
                     'results': [{
                         'stock': r['stock'],
                         'recommendation': r['recommendation']['recommendation'],
-                        'score': r['recommendation']['score'],
-                        'confidence': r['recommendation']['confidence']
+                        'score': r['recommendation']['overall_score']
                     } for r in results]
                 }
                 

@@ -130,10 +130,3 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
-#
-# Replit specific
-.replit
-replit.nix
-poetry.lock
-pyproject.toml
-uv.lock

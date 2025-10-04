@@ -1,5 +1,9 @@
 import streamlit as st
+from dotenv import load_dotenv
 from utils.ui_helpers import apply_global_styles, render_sidebar_header, get_theme
+
+# Load environment variables from .env file
+load_dotenv()
 
 st.set_page_config(
     page_title="Stock Trading Platform",

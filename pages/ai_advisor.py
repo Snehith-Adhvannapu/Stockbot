@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.graph_objects as go
 import time
 from datetime import datetime
 
@@ -9,6 +10,15 @@ from agents.sentiment_agent import SentimentAgent
 from agents.aggregator_agent import AggregatorAgent
 from utils.cache_manager import CacheManager
 from utils.data_normalizer import DataNormalizer
+
+SECTORS = {
+    "🖥️ IT & Tech": ["TCS", "INFY", "HCLTECH", "WIPRO", "TECHM"],
+    "🏦 Banking": ["HDFCBANK", "ICICIBANK", "SBI", "KOTAKBANK", "AXISBANK"],
+    "🚗 Auto": ["MARUTI", "TATAMOTORS", "M&M", "BAJAJ-AUTO", "EICHERMOT"],
+    "⚗️ Pharma": ["SUNPHARMA", "DRREDDY", "CIPLA", "DIVISLAB", "BIOCON"],
+    "🌿 Green Energy": ["ADANIGREEN", "SUZLON", "TATAPOWER", "NTPC", "POWERGRID"],
+    "🏭 Diversified": ["RELIANCE", "ITC", "HINDUNILVR", "LT", "ASIANPAINT"]
+}
 
 @st.cache_resource
 def get_cache_manager():
@@ -26,57 +36,79 @@ def initialize_agents():
 
 def show():
     st.title("🧠 AI Stock Advisor")
-    st.markdown("Multi-agent stock analysis combining sentiment and fundamental research")
+    st.markdown("Intelligent stock recommendations powered by AI sentiment analysis and fundamental research")
     
-    st.markdown("### 📊 Enter Stock Symbol")
+    st.markdown("---")
     
-    col1, col2 = st.columns([3, 1])
+    st.markdown("### 1. Choose Your Sector")
+    st.markdown("Select from predefined sectors:")
     
-    with col1:
-        symbol_input = st.text_input(
-            "Stock Symbol",
-            value="AAPL",
-            max_chars=10,
-            placeholder="e.g., AAPL, MSFT, GOOGL"
-        ).upper()
+    selected_sector = st.selectbox(
+        "Sector",
+        options=list(SECTORS.keys()),
+        label_visibility="collapsed"
+    )
     
-    with col2:
-        st.markdown("<br>", unsafe_allow_html=True)
-        analyze_button = st.button("🔍 Analyze", type="primary", use_container_width=True)
+    stocks_in_sector = SECTORS[selected_sector]
+    st.caption(f"**Stocks:** {', '.join(stocks_in_sector)}")
     
-    st.markdown("### ⚙️ Analysis Configuration")
+    st.markdown("---")
+    
+    st.markdown("### 2. Set Analysis Balance")
+    st.markdown("Use the interactive slider to adjust weighting:")
+    
+    balance = st.slider(
+        "Analysis Balance",
+        min_value=0,
+        max_value=100,
+        value=50,
+        help="Left (0%): Pure fundamental analysis | Center (50%): Balanced approach | Right (100%): Pure sentiment analysis",
+        label_visibility="collapsed"
+    )
     
     col1, col2, col3 = st.columns(3)
+    with col1:
+        st.caption("**Left (0%):** Pure fundamental analysis")
+    with col2:
+        st.caption("**Center (50%):** Balanced approach")
+    with col3:
+        st.caption("**Right (100%):** Pure sentiment analysis")
+    
+    fundamental_weight = (100 - balance) / 100
+    sentiment_weight = balance / 100
+    
+    st.markdown("---")
+    
+    st.markdown("### 3. Advanced Options")
+    
+    col1, col2 = st.columns(2)
     
     with col1:
-        sentiment_weight = st.slider(
-            "Sentiment Weight",
-            min_value=0.0,
-            max_value=1.0,
-            value=0.4,
-            step=0.1,
-            help="Weight given to sentiment analysis"
+        stock_count = st.slider(
+            "Stock Count",
+            min_value=3,
+            max_value=10,
+            value=5,
+            help="Analyze 3-10 stocks per sector"
         )
+        st.caption("Analyze 3-10 stocks per sector")
     
     with col2:
-        fundamental_weight = st.slider(
-            "Fundamental Weight",
-            min_value=0.0,
-            max_value=1.0,
-            value=0.6,
-            step=0.1,
-            help="Weight given to fundamental analysis"
+        risk_tolerance = st.select_slider(
+            "Risk Tolerance",
+            options=["Conservative", "Moderate", "Aggressive"],
+            value="Moderate"
         )
+        st.caption("Select your risk profile")
     
-    with col3:
-        total_weight = sentiment_weight + fundamental_weight
-        if abs(total_weight - 1.0) > 0.01:
-            st.warning(f"⚠️ Total: {total_weight:.1f}")
-        else:
-            st.success(f"✅ Total: {total_weight:.1f}")
+    st.markdown("---")
     
-    if analyze_button and symbol_input:
-        with st.spinner(f"Analyzing {symbol_input}..."):
+    analyze_button = st.button("🔍 Analyze Sector", type="primary", use_container_width=True)
+    
+    if analyze_button:
+        stocks_to_analyze = stocks_in_sector[:stock_count]
+        
+        with st.spinner(f"Analyzing {len(stocks_to_analyze)} stocks from {selected_sector}..."):
             try:
                 screening_agent, fundamental_agent, sentiment_agent, aggregator_agent, data_normalizer = initialize_agents()
                 cache_manager = get_cache_manager()
@@ -84,128 +116,186 @@ def show():
                 progress_bar = st.progress(0)
                 status_text = st.empty()
                 
-                status_text.text("🔍 Running sentiment analysis...")
-                progress_bar.progress(25)
-                sentiment_result = sentiment_agent.analyze(symbol_input)
-                time.sleep(0.5)
+                all_results = []
                 
-                status_text.text("📊 Performing fundamental analysis...")
-                progress_bar.progress(50)
-                fundamental_result = fundamental_agent.analyze(symbol_input)
-                time.sleep(0.5)
+                for idx, stock in enumerate(stocks_to_analyze):
+                    symbol = f"{stock}.NS"
+                    
+                    status_text.text(f"Analyzing {stock} ({idx + 1}/{len(stocks_to_analyze)})...")
+                    
+                    try:
+                        sentiment_result = sentiment_agent.analyze(symbol)
+                        fundamental_result = fundamental_agent.analyze(symbol)
+                        
+                        analysis_results = {
+                            'symbol': stock,
+                            'sentiment': sentiment_result,
+                            'fundamental': fundamental_result,
+                            'weights': {
+                                'sentiment': sentiment_weight,
+                                'fundamental': fundamental_weight
+                            }
+                        }
+                        
+                        final_recommendation = aggregator_agent.aggregate(analysis_results)
+                        
+                        all_results.append({
+                            'stock': stock,
+                            'analysis': analysis_results,
+                            'recommendation': final_recommendation
+                        })
+                        
+                    except Exception as e:
+                        st.warning(f"Could not analyze {stock}: {str(e)}")
+                    
+                    progress_bar.progress((idx + 1) / len(stocks_to_analyze))
                 
-                status_text.text("🤖 Aggregating results...")
-                progress_bar.progress(75)
-                
-                analysis_results = {
-                    'symbol': symbol_input,
-                    'sentiment': sentiment_result,
-                    'fundamental': fundamental_result,
-                    'weights': {
-                        'sentiment': sentiment_weight,
-                        'fundamental': fundamental_weight
-                    }
-                }
-                
-                final_recommendation = aggregator_agent.aggregate(analysis_results)
-                progress_bar.progress(100)
                 status_text.text("✅ Analysis complete!")
-                
                 time.sleep(0.5)
                 progress_bar.empty()
                 status_text.empty()
                 
-                st.session_state.analysis_results = analysis_results
-                st.session_state.final_recommendation = final_recommendation
+                st.session_state.analysis_results = all_results
+                st.session_state.sector = selected_sector
+                st.session_state.risk_tolerance = risk_tolerance
                 
             except Exception as e:
                 st.error(f"Analysis failed: {str(e)}")
-                st.exception(e)
                 return
     
-    if 'final_recommendation' in st.session_state:
-        recommendation = st.session_state.final_recommendation
-        analysis = st.session_state.analysis_results
+    if 'analysis_results' in st.session_state and st.session_state.analysis_results:
+        results = st.session_state.analysis_results
         
         st.markdown("---")
-        st.markdown("### 📊 Analysis Results")
+        st.markdown("### 4. Review Results")
+        
+        st.markdown("#### Summary Cards")
+        st.markdown("Quick overview of BUY/HOLD/SELL counts")
+        
+        buy_count = sum(1 for r in results if r['recommendation'].get('recommendation') == 'BUY')
+        hold_count = sum(1 for r in results if r['recommendation'].get('recommendation') == 'HOLD')
+        sell_count = sum(1 for r in results if r['recommendation'].get('recommendation') == 'SELL')
         
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            action = recommendation.get('recommendation', 'HOLD')
-            if action == 'BUY':
-                st.success(f"### 🟢 {action}")
-            elif action == 'SELL':
-                st.error(f"### 🔴 {action}")
-            else:
-                st.info(f"### 🟡 {action}")
-        
+            st.metric("🟢 BUY", buy_count)
         with col2:
-            confidence = recommendation.get('confidence', 0) * 100
-            st.metric("Confidence", f"{confidence:.1f}%")
-        
+            st.metric("🟡 HOLD", hold_count)
         with col3:
-            score = recommendation.get('score', 0) * 10
-            st.metric("Overall Score", f"{score:.1f}/10")
+            st.metric("🔴 SELL", sell_count)
         
-        col1, col2 = st.columns(2)
+        st.markdown("#### Performance Chart")
+        st.markdown("Visual comparison of all analyzed stocks")
         
-        with col1:
-            st.markdown("#### 💭 Sentiment Analysis")
-            sentiment_data = analysis.get('sentiment', {})
+        chart_data = []
+        for r in results:
+            score = r['recommendation'].get('score', 0) * 100
+            recommendation = r['recommendation'].get('recommendation', 'HOLD')
             
-            if sentiment_data and 'error' not in sentiment_data:
-                sentiment_score = sentiment_data.get('sentiment_score', 0)
-                
-                if sentiment_score > 0.2:
-                    st.success(f"**Score:** {sentiment_score:.2f} (Positive)")
-                elif sentiment_score < -0.2:
-                    st.error(f"**Score:** {sentiment_score:.2f} (Negative)")
-                else:
-                    st.info(f"**Score:** {sentiment_score:.2f} (Neutral)")
-                
-                st.write(f"**News Articles:** {sentiment_data.get('num_articles', 0)}")
-                st.write(f"**Avg Sentiment:** {sentiment_data.get('avg_sentiment', 0):.2f}")
-                
-                if sentiment_data.get('summary'):
-                    with st.expander("View Summary"):
-                        st.write(sentiment_data['summary'])
-            else:
-                st.warning("Sentiment data unavailable")
-        
-        with col2:
-            st.markdown("#### 📈 Fundamental Analysis")
-            fundamental_data = analysis.get('fundamental', {})
+            color = '#00C853' if recommendation == 'BUY' else '#FFC107' if recommendation == 'HOLD' else '#FF5252'
             
-            if fundamental_data and 'error' not in fundamental_data:
-                fundamental_score = fundamental_data.get('fundamental_score', 0)
-                
-                if fundamental_score > 6:
-                    st.success(f"**Score:** {fundamental_score:.1f}/10 (Strong)")
-                elif fundamental_score > 4:
-                    st.info(f"**Score:** {fundamental_score:.1f}/10 (Moderate)")
-                else:
-                    st.warning(f"**Score:** {fundamental_score:.1f}/10 (Weak)")
-                
-                metrics = fundamental_data.get('metrics', {})
-                if metrics:
-                    st.write(f"**P/E Ratio:** {metrics.get('pe_ratio', 'N/A')}")
-                    st.write(f"**EPS:** ${metrics.get('eps', 'N/A')}")
-                    st.write(f"**Market Cap:** ${metrics.get('market_cap', 'N/A')}")
+            chart_data.append({
+                'Stock': r['stock'],
+                'Score': score,
+                'Recommendation': recommendation,
+                'Color': color
+            })
+        
+        df = pd.DataFrame(chart_data)
+        
+        fig = go.Figure(data=[
+            go.Bar(
+                x=df['Stock'],
+                y=df['Score'],
+                marker_color=df['Color'],
+                text=df['Score'].round(1),
+                textposition='auto',
+                hovertemplate='<b>%{x}</b><br>Score: %{y:.1f}<br>%{customdata}<extra></extra>',
+                customdata=df['Recommendation']
+            )
+        ])
+        
+        fig.update_layout(
+            title="Stock Performance Scores",
+            xaxis_title="Stock",
+            yaxis_title="Score (0-100)",
+            yaxis_range=[0, 100],
+            height=400,
+            showlegend=False
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        st.markdown("#### Detailed Cards")
+        st.markdown("Expandable analysis with full metrics and reasoning")
+        
+        for r in results:
+            stock = r['stock']
+            rec = r['recommendation']
+            analysis = r['analysis']
+            
+            recommendation = rec.get('recommendation', 'HOLD')
+            score = rec.get('score', 0) * 100
+            confidence = rec.get('confidence', 0) * 100
+            
+            if recommendation == 'BUY':
+                color = "green"
+                emoji = "🟢"
+            elif recommendation == 'SELL':
+                color = "red"
+                emoji = "🔴"
             else:
-                st.warning("Fundamental data unavailable")
-        
-        st.markdown("---")
-        st.markdown("### 📝 Recommendation Summary")
-        
-        summary = recommendation.get('summary', 'No summary available')
-        st.info(summary)
-        
-        if recommendation.get('reasoning'):
-            with st.expander("📋 Detailed Reasoning"):
-                for reason in recommendation['reasoning']:
-                    st.write(f"• {reason}")
+                color = "orange"
+                emoji = "🟡"
+            
+            with st.expander(f"{emoji} **{stock}** - {recommendation} (Score: {score:.1f})"):
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric("Recommendation", recommendation)
+                with col2:
+                    st.metric("Score", f"{score:.1f}")
+                with col3:
+                    st.metric("Confidence", f"{confidence:.1f}%")
+                
+                st.markdown("**Summary:**")
+                st.info(rec.get('summary', 'No summary available'))
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("**📊 Fundamental Analysis**")
+                    fundamental_data = analysis.get('fundamental', {})
+                    
+                    if fundamental_data and 'error' not in fundamental_data:
+                        fundamental_score = fundamental_data.get('fundamental_score', 0)
+                        st.write(f"Score: {fundamental_score:.1f}/10")
+                        
+                        metrics = fundamental_data.get('metrics', {})
+                        if metrics:
+                            st.write(f"P/E Ratio: {metrics.get('pe_ratio', 'N/A')}")
+                            st.write(f"Market Cap: {metrics.get('market_cap', 'N/A')}")
+                            st.write(f"EPS: {metrics.get('eps', 'N/A')}")
+                    else:
+                        st.write("Data unavailable")
+                
+                with col2:
+                    st.markdown("**💭 Sentiment Analysis**")
+                    sentiment_data = analysis.get('sentiment', {})
+                    
+                    if sentiment_data and 'error' not in sentiment_data:
+                        sentiment_score = sentiment_data.get('sentiment_score', 0)
+                        st.write(f"Score: {sentiment_score:.2f}")
+                        st.write(f"News Articles: {sentiment_data.get('num_articles', 0)}")
+                        st.write(f"Avg Sentiment: {sentiment_data.get('avg_sentiment', 0):.2f}")
+                    else:
+                        st.write("Data unavailable")
+                
+                if rec.get('reasoning'):
+                    st.markdown("**Reasoning:**")
+                    for reason in rec['reasoning']:
+                        st.write(f"• {reason}")
         
         st.markdown("---")
         
@@ -214,12 +304,16 @@ def show():
         with col1:
             if st.button("📥 Export Report", use_container_width=True):
                 report = {
-                    'symbol': analysis['symbol'],
+                    'sector': st.session_state.sector,
                     'timestamp': datetime.now().isoformat(),
-                    'recommendation': recommendation['recommendation'],
-                    'confidence': recommendation['confidence'],
-                    'score': recommendation['score'],
-                    'analysis': analysis
+                    'risk_tolerance': st.session_state.risk_tolerance,
+                    'analysis_balance': f"{balance}% sentiment / {100-balance}% fundamental",
+                    'results': [{
+                        'stock': r['stock'],
+                        'recommendation': r['recommendation']['recommendation'],
+                        'score': r['recommendation']['score'],
+                        'confidence': r['recommendation']['confidence']
+                    } for r in results]
                 }
                 
                 import json
@@ -227,19 +321,18 @@ def show():
                 st.download_button(
                     "Download JSON",
                     report_json,
-                    f"{analysis['symbol']}_analysis_{datetime.now().strftime('%Y%m%d')}.json",
+                    f"sector_analysis_{datetime.now().strftime('%Y%m%d')}.json",
                     "application/json"
                 )
         
         with col2:
             if st.button("🔄 New Analysis", use_container_width=True):
                 del st.session_state.analysis_results
-                del st.session_state.final_recommendation
                 st.rerun()
     
     else:
         st.markdown("---")
-        st.markdown("### 🔍 How It Works")
+        st.markdown("### 💡 How It Works")
         
         col1, col2 = st.columns(2)
         
@@ -262,9 +355,10 @@ def show():
             """)
         
         st.markdown("""
-        ### 💡 Tips
-        - Adjust weights to prioritize different analysis types
-        - Sentiment analysis works best for trending stocks
-        - Fundamental analysis is better for long-term decisions
-        - Use both for comprehensive insights
+        ### 📝 Tips
+        - **Conservative**: Focus on fundamental analysis (0-30% sentiment)
+        - **Moderate**: Balanced approach (40-60% sentiment)
+        - **Aggressive**: Higher sentiment weight (70-100% sentiment)
+        - Analyze multiple stocks to compare opportunities
+        - Review detailed cards for in-depth insights
         """)

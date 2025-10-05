@@ -16,8 +16,11 @@ try:
     nltk.download('vader_lexicon', quiet=True)
     nltk.download('punkt', quiet=True)
     nltk.download('stopwords', quiet=True)
+    NLTK_AVAILABLE = True
 except ImportError:
     print("NLTK not available")
+    SentimentIntensityAnalyzer = None
+    NLTK_AVAILABLE = False
 
 try:
     import spacy
@@ -41,9 +44,12 @@ class SentimentAgent:
         self.cache_duration = 3600  # 1 hour cache for news
         
         # Initialize sentiment analyzer
-        try:
-            self.sia = SentimentIntensityAnalyzer()
-        except:
+        if NLTK_AVAILABLE and SentimentIntensityAnalyzer:
+            try:
+                self.sia = SentimentIntensityAnalyzer()
+            except:
+                self.sia = None
+        else:
             self.sia = None
         
         # Headers for news API

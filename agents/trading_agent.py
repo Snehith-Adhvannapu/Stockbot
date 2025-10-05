@@ -2,6 +2,7 @@ import os
 from typing import Dict, List, Optional
 from datetime import datetime
 from alpaca.trading.client import TradingClient
+from alpaca.trading.models import TradeAccount, Position, Order
 from alpaca.trading.requests import MarketOrderRequest, LimitOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 from alpaca.data.historical import StockHistoricalDataClient
@@ -31,15 +32,15 @@ class TradingAgent:
     def get_account_info(self) -> Dict:
         """Get current account information"""
         try:
-            account = self.trading_client.get_account()
+            account: TradeAccount = self.trading_client.get_account()  # type: ignore
             return {
                 'account_number': account.account_number,
                 'status': account.status,
-                'buying_power': float(account.buying_power),
-                'cash': float(account.cash),
-                'portfolio_value': float(account.portfolio_value),
-                'equity': float(account.equity),
-                'last_equity': float(account.last_equity),
+                'buying_power': float(account.buying_power or 0),
+                'cash': float(account.cash or 0),
+                'portfolio_value': float(account.portfolio_value or 0),
+                'equity': float(account.equity or 0),
+                'last_equity': float(account.last_equity or 0),
                 'currency': account.currency,
                 'pattern_day_trader': account.pattern_day_trader,
                 'trading_blocked': account.trading_blocked,
@@ -56,17 +57,17 @@ class TradingAgent:
     def get_positions(self) -> List[Dict]:
         """Get all current positions"""
         try:
-            positions = self.trading_client.get_all_positions()
+            positions: List[Position] = self.trading_client.get_all_positions()  # type: ignore
             return [
                 {
                     'symbol': pos.symbol,
-                    'qty': float(pos.qty),
-                    'avg_entry_price': float(pos.avg_entry_price),
-                    'current_price': float(pos.current_price),
-                    'market_value': float(pos.market_value),
-                    'cost_basis': float(pos.cost_basis),
-                    'unrealized_pl': float(pos.unrealized_pl),
-                    'unrealized_plpc': float(pos.unrealized_plpc),
+                    'qty': float(pos.qty or 0),
+                    'avg_entry_price': float(pos.avg_entry_price or 0),
+                    'current_price': float(pos.current_price or 0),
+                    'market_value': float(pos.market_value or 0),
+                    'cost_basis': float(pos.cost_basis or 0),
+                    'unrealized_pl': float(pos.unrealized_pl or 0),
+                    'unrealized_plpc': float(pos.unrealized_plpc or 0),
                     'side': pos.side,
                     'exchange': pos.exchange,
                 }
@@ -78,15 +79,15 @@ class TradingAgent:
     def get_open_orders(self) -> List[Dict]:
         """Get all open orders"""
         try:
-            orders = self.trading_client.get_orders()
+            orders: List[Order] = self.trading_client.get_orders()  # type: ignore
             return [
                 {
                     'id': str(order.id),
                     'symbol': order.symbol,
                     'qty': float(order.qty) if order.qty else None,
-                    'side': order.side.value,
-                    'type': order.type.value,
-                    'status': order.status.value,
+                    'side': order.side.value if order.side else None,
+                    'type': order.type.value if order.type else None,
+                    'status': order.status.value if order.status else None,
                     'created_at': order.created_at.isoformat() if order.created_at else None,
                     'filled_qty': float(order.filled_qty) if order.filled_qty else 0,
                     'filled_avg_price': float(order.filled_avg_price) if order.filled_avg_price else None,
@@ -115,16 +116,16 @@ class TradingAgent:
                 time_in_force=TimeInForce.DAY
             )
             
-            order = self.trading_client.submit_order(order_data=market_order_data)
+            order: Order = self.trading_client.submit_order(order_data=market_order_data)  # type: ignore
             
             return {
                 'success': True,
                 'order_id': str(order.id),
                 'symbol': order.symbol,
                 'qty': float(order.qty) if order.qty else None,
-                'side': order.side.value,
-                'type': order.type.value,
-                'status': order.status.value,
+                'side': order.side.value if order.side else None,
+                'type': order.type.value if order.type else None,
+                'status': order.status.value if order.status else None,
                 'created_at': order.created_at.isoformat() if order.created_at else None,
                 'message': f"Market {side} order placed successfully"
             }
@@ -155,17 +156,17 @@ class TradingAgent:
                 limit_price=limit_price
             )
             
-            order = self.trading_client.submit_order(order_data=limit_order_data)
+            order: Order = self.trading_client.submit_order(order_data=limit_order_data)  # type: ignore
             
             return {
                 'success': True,
                 'order_id': str(order.id),
                 'symbol': order.symbol,
                 'qty': float(order.qty) if order.qty else None,
-                'side': order.side.value,
-                'type': order.type.value,
+                'side': order.side.value if order.side else None,
+                'type': order.type.value if order.type else None,
                 'limit_price': limit_price,
-                'status': order.status.value,
+                'status': order.status.value if order.status else None,
                 'created_at': order.created_at.isoformat() if order.created_at else None,
                 'message': f"Limit {side} order placed successfully"
             }

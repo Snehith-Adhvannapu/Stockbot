@@ -142,6 +142,9 @@ class AutonomousTradingBot:
                 continue
             
             symbol = position.get('symbol')
+            if not symbol:
+                continue
+                
             qty = float(position.get('qty', 0))
             entry_price = float(position.get('avg_entry_price', 0))
             current_price = float(position.get('current_price', 0))

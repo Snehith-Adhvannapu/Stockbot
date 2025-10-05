@@ -143,7 +143,7 @@ def show():
         
         col1, col2, col3, col4 = st.columns(4)
         
-        total_return = results['total_return']
+        total_return = results.get('total_return', 0)
         
         with col1:
             if total_return > 0:
@@ -152,15 +152,15 @@ def show():
                 st.error(f"**Return**\n\n## {total_return:.2f}%")
         
         with col2:
-            sharpe = results['sharpe_ratio']
+            sharpe = results.get('sharpe_ratio', 0)
             st.metric("Sharpe Ratio", f"{sharpe:.2f}", help="Risk-adjusted return (higher is better)")
         
         with col3:
-            win_rate = results['win_rate']
+            win_rate = results.get('win_rate', 0)
             st.metric("Win Rate", f"{win_rate:.1f}%", help="Percentage of profitable trades")
         
         with col4:
-            drawdown = results['max_drawdown']
+            drawdown = results.get('max_drawdown', 0)
             st.metric("Max Drawdown", f"{drawdown:.1f}%", help="Biggest loss from peak")
         
         st.markdown("### 📈 Performance Chart")
@@ -182,15 +182,15 @@ def show():
         
         with col2:
             st.markdown("#### 📊 Trades")
-            st.write(f"**Total trades:** {results['total_trades']}")
-            st.write(f"**Winning trades:** {results['winning_trades']}")
-            st.write(f"**Losing trades:** {results['losing_trades']}")
-            st.write(f"**Avg win:** ${results['avg_win']:,.2f}")
-            st.write(f"**Avg loss:** ${results['avg_loss']:,.2f}")
+            st.write(f"**Total trades:** {results.get('total_trades', 0)}")
+            st.write(f"**Winning trades:** {results.get('winning_trades', 0)}")
+            st.write(f"**Losing trades:** {results.get('losing_trades', 0)}")
+            st.write(f"**Avg win:** ${results.get('avg_win', 0):,.2f}")
+            st.write(f"**Avg loss:** ${results.get('avg_loss', 0):,.2f}")
         
         with st.expander("📋 See All Trades"):
-            if results['trade_details']:
-                trades_df = pd.DataFrame(results['trade_details'])
+            if results.get('trade_details'):
+                trades_df = pd.DataFrame(results.get('trade_details', []))
                 trades_df['date'] = pd.to_datetime(trades_df['date']).dt.strftime('%Y-%m-%d')
                 st.dataframe(trades_df, use_container_width=True, hide_index=True)
             else:

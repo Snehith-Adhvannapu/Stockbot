@@ -13,8 +13,9 @@ def show():
     
     watchlist_input = st.text_area(
         "Enter symbols (one per line):",
-        value="AAPL\nMSFT\nGOOGL\nAMZN\nTSLA\nMETA\nNVDA",
-        height=120
+        value="",
+        height=120,
+        placeholder="AAPL\nMSFT\nGOOGL\nTSLA"
     )
     
     symbols = [s.strip().upper() for s in watchlist_input.split('\n') if s.strip()]
@@ -98,7 +99,48 @@ def show():
                 st.metric("Neutral Patterns", watch_count)
             
             df = pd.DataFrame(results)
-            st.dataframe(df, use_container_width=True, hide_index=True)
+            
+            st.markdown("### Pattern Details")
+            
+            for result in results:
+                signal = result['Signal']
+                if signal == 'BUY':
+                    bg_color = "#e8f5e9"
+                    border_color = "#4CAF50"
+                    icon = "🟢"
+                elif signal == 'SELL':
+                    bg_color = "#ffebee"
+                    border_color = "#f44336"
+                    icon = "🔴"
+                else:
+                    bg_color = "#fff3e0"
+                    border_color = "#FF9800"
+                    icon = "🟡"
+                
+                st.markdown(f"""
+                <div style='background: {bg_color}; 
+                           border-left: 4px solid {border_color}; 
+                           padding: 1rem; 
+                           margin: 0.5rem 0; 
+                           border-radius: 8px;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;'>
+                        <div style='flex: 2; min-width: 150px;'>
+                            <h3 style='margin: 0; font-size: 1.5rem;'>{icon} {result['Stock']}</h3>
+                            <p style='margin: 0.25rem 0; color: #666;'>Signal: <strong>{result['Signal']}</strong></p>
+                        </div>
+                        <div style='flex: 3; min-width: 200px; text-align: center;'>
+                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Pattern Detected</p>
+                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['Pattern']}</p>
+                        </div>
+                        <div style='flex: 1; min-width: 120px; text-align: center;'>
+                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Confidence</p>
+                            <p style='margin: 0; font-size: 1.3rem; font-weight: bold; color: {border_color};'>{result['Confidence']}</p>
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
             
             if st.button("📥 Export Results", use_container_width=True):
                 csv = df.to_csv(index=False)

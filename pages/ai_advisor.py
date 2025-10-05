@@ -46,21 +46,58 @@ def show():
     
     st.markdown("---")
     
-    st.markdown("### 1. Choose Your Sector")
-    st.markdown("Select from predefined sectors:")
-    
-    selected_sector = st.selectbox(
-        "Sector",
-        options=list(SECTORS.keys()),
+    st.markdown("### 1. Select Analysis Mode")
+    analysis_type = st.radio(
+        "Choose your analysis approach:",
+        ["📊 Sector Analysis", "✏️ Custom Stocks"],
+        horizontal=True,
         label_visibility="collapsed"
     )
     
-    stocks_in_sector = SECTORS[selected_sector]
-    st.caption(f"**Stocks:** {', '.join(stocks_in_sector)}")
+    st.markdown("---")
+    
+    if analysis_type == "📊 Sector Analysis":
+        st.markdown("### 2. Choose Your Sector")
+        st.markdown("Select from predefined sectors:")
+        
+        selected_sector = st.selectbox(
+            "Sector",
+            options=list(SECTORS.keys()),
+            label_visibility="collapsed",
+            key="sector_select"
+        )
+        
+        sector_stocks = SECTORS[selected_sector]
+        st.caption(f"**Stocks:** {', '.join(sector_stocks)}")
+        
+        stocks_to_use = sector_stocks
+        analysis_mode = 'sector'
+        display_name = selected_sector
+    else:
+        st.markdown("### 2. Enter Your Stocks")
+        st.markdown("Enter the stock symbols you want to analyze:")
+        
+        custom_input = st.text_area(
+            "Enter symbols (one per line):",
+            value="",
+            height=150,
+            placeholder="AAPL\nMSFT\nGOOGL\nTSLA\nNVDA",
+            key="custom_stocks_input"
+        )
+        
+        custom_stocks = [s.strip().upper() for s in custom_input.split('\n') if s.strip()]
+        if custom_stocks:
+            st.caption(f"✓ Ready to analyze {len(custom_stocks)} stocks")
+        else:
+            st.caption("⚠️ Please enter at least one stock symbol")
+        
+        stocks_to_use = custom_stocks
+        analysis_mode = 'custom'
+        display_name = "Custom Stocks"
     
     st.markdown("---")
     
-    st.markdown("### 2. Set Analysis Balance")
+    st.markdown("### 3. Set Analysis Balance")
     st.markdown("Use the interactive slider to adjust weighting:")
     
     balance = st.slider(
@@ -85,19 +122,23 @@ def show():
     
     st.markdown("---")
     
-    st.markdown("### 3. Advanced Options")
+    st.markdown("### 4. Advanced Options")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        stock_count = st.slider(
-            "Stock Count",
-            min_value=3,
-            max_value=10,
-            value=5,
-            help="Analyze 3-10 stocks per sector"
-        )
-        st.caption("Analyze 3-10 stocks per sector")
+        if analysis_mode == "sector":
+            stock_count = st.slider(
+                "Stock Count",
+                min_value=3,
+                max_value=min(10, len(stocks_to_use)),
+                value=min(5, len(stocks_to_use)),
+                help="Analyze 3-10 stocks per sector"
+            )
+            st.caption("Number of stocks to analyze from sector")
+        else:
+            stock_count = len(stocks_to_use)
+            st.info(f"Will analyze all {stock_count} custom stocks")
     
     with col2:
         risk_tolerance = st.select_slider(
@@ -109,12 +150,16 @@ def show():
     
     st.markdown("---")
     
-    analyze_button = st.button("🔍 Analyze Sector", type="primary", use_container_width=True)
+    button_label = "🔍 Analyze Sector" if analysis_mode == "sector" else "🔍 Analyze Stocks"
+    analyze_button = st.button(button_label, type="primary", use_container_width=True, disabled=(analysis_mode == "custom" and len(stocks_to_use) == 0))
     
     if analyze_button:
-        stocks_to_analyze = stocks_in_sector[:stock_count]
+        if analysis_mode == "sector":
+            stocks_to_analyze = stocks_to_use[:stock_count]
+        else:
+            stocks_to_analyze = stocks_to_use
         
-        with st.spinner(f"Analyzing {len(stocks_to_analyze)} stocks from {selected_sector}..."):
+        with st.spinner(f"Analyzing {len(stocks_to_analyze)} stocks from {display_name}..."):
             try:
                 screening_agent, fundamental_agent, sentiment_agent, aggregator_agent, data_normalizer = initialize_agents()
                 cache_manager = get_cache_manager()
@@ -125,7 +170,7 @@ def show():
                 all_results = []
                 
                 for idx, stock in enumerate(stocks_to_analyze):
-                    if "(India)" in selected_sector:
+                    if analysis_mode == "sector" and "(India)" in display_name:
                         symbol = f"{stock}.NS"
                     else:
                         symbol = stock
@@ -173,7 +218,7 @@ def show():
                 status_text.empty()
                 
                 st.session_state.analysis_results = all_results
-                st.session_state.sector = selected_sector
+                st.session_state.sector = display_name
                 st.session_state.risk_tolerance = risk_tolerance
                 
             except Exception as e:
@@ -184,7 +229,7 @@ def show():
         results = st.session_state.analysis_results
         
         st.markdown("---")
-        st.markdown("### 4. Review Results")
+        st.markdown("### 5. Review Results")
         
         st.markdown("#### Summary Cards")
         st.markdown("Quick overview of BUY/HOLD/SELL counts")

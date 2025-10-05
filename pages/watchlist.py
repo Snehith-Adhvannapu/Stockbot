@@ -11,7 +11,7 @@ def show():
     st.markdown("Track your favorite stocks in real-time")
     
     if 'watchlist' not in st.session_state:
-        st.session_state.watchlist = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'AMZN']
+        st.session_state.watchlist = []
     
     col1, col2 = st.columns([3, 1])
     
@@ -122,12 +122,76 @@ def show():
         if watchlist_data:
             df = pd.DataFrame(watchlist_data)
             
-            st.dataframe(
-                df[['Symbol', 'Price', 'Change', 'Change %', 'High', 'Low', 'Volume', 'RSI']],
-                use_container_width=True,
-                hide_index=True
-            )
+            st.markdown("### Stock Performance")
             
+            for stock_data in watchlist_data:
+                if stock_data['Price'] != 'Error':
+                    change_pct = float(stock_data['Change %'].replace('%', '').replace('+', ''))
+                    if change_pct >= 0:
+                        bg_color = "#e8f5e9"
+                        border_color = "#4CAF50"
+                        icon = "📈"
+                    else:
+                        bg_color = "#ffebee"
+                        border_color = "#f44336"
+                        icon = "📉"
+                    
+                    rsi_val = float(stock_data['RSI'])
+                    if rsi_val < 30:
+                        rsi_status = "Oversold"
+                        rsi_color = "#4CAF50"
+                    elif rsi_val > 70:
+                        rsi_status = "Overbought"
+                        rsi_color = "#f44336"
+                    else:
+                        rsi_status = "Neutral"
+                        rsi_color = "#666"
+                    
+                    st.markdown(f"""
+                    <div style='background: {bg_color}; 
+                               border-left: 4px solid {border_color}; 
+                               padding: 1rem; 
+                               margin: 0.5rem 0; 
+                               border-radius: 8px;'>
+                        <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;'>
+                            <div style='flex: 1; min-width: 100px;'>
+                                <h3 style='margin: 0; font-size: 1.5rem;'>{icon} {stock_data['Symbol']}</h3>
+                            </div>
+                            <div style='flex: 1; min-width: 100px; text-align: center;'>
+                                <p style='margin: 0; color: #666; font-size: 0.9rem;'>Price</p>
+                                <p style='margin: 0; font-size: 1.3rem; font-weight: bold;'>{stock_data['Price']}</p>
+                                <p style='margin: 0; color: {border_color}; font-weight: bold;'>{stock_data['Change %']}</p>
+                            </div>
+                            <div style='flex: 1; min-width: 100px; text-align: center;'>
+                                <p style='margin: 0; color: #666; font-size: 0.9rem;'>High / Low</p>
+                                <p style='margin: 0; font-size: 1.1rem;'>{stock_data['High']}</p>
+                                <p style='margin: 0; font-size: 1.1rem;'>{stock_data['Low']}</p>
+                            </div>
+                            <div style='flex: 1; min-width: 100px; text-align: center;'>
+                                <p style='margin: 0; color: #666; font-size: 0.9rem;'>Volume</p>
+                                <p style='margin: 0; font-size: 1.1rem;'>{stock_data['Volume']}</p>
+                            </div>
+                            <div style='flex: 1; min-width: 100px; text-align: center;'>
+                                <p style='margin: 0; color: #666; font-size: 0.9rem;'>RSI</p>
+                                <p style='margin: 0; font-size: 1.3rem; font-weight: bold; color: {rsi_color};'>{stock_data['RSI']}</p>
+                                <p style='margin: 0; font-size: 0.85rem; color: {rsi_color};'>{rsi_status}</p>
+                            </div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div style='background: #fafafa; 
+                               border-left: 4px solid #999; 
+                               padding: 1rem; 
+                               margin: 0.5rem 0; 
+                               border-radius: 8px;'>
+                        <h3 style='margin: 0; font-size: 1.5rem;'>⚠️ {stock_data['Symbol']}</h3>
+                        <p style='margin: 0.25rem 0; color: #666;'>Unable to fetch data for this symbol</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
             st.markdown("### Quick Actions")
             
             cols = st.columns(len(st.session_state.watchlist))

@@ -56,8 +56,9 @@ def show():
         st.markdown("**Stocks to scan**")
         watchlist_input = st.text_area(
             "Enter symbols (one per line):",
-            value="AAPL\nMSFT\nGOOGL\nAMZN\nTSLA\nMETA\nNVDA\nAMD\nINTC\nNFLX",
-            height=150
+            value="",
+            height=150,
+            placeholder="AAPL\nMSFT\nGOOGL\nTSLA"
         )
         
         symbols = [s.strip().upper() for s in watchlist_input.split('\n') if s.strip()]
@@ -208,7 +209,55 @@ def show():
             st.markdown("<br>", unsafe_allow_html=True)
             
             df = pd.DataFrame(results)
-            st.dataframe(df, use_container_width=True, hide_index=True)
+            
+            for result in results:
+                signal = result['Signal']
+                if signal == 'BUY':
+                    bg_color = "#e8f5e9"
+                    border_color = "#4CAF50"
+                    icon = "🟢"
+                elif signal == 'SELL':
+                    bg_color = "#ffebee"
+                    border_color = "#f44336"
+                    icon = "🔴"
+                else:
+                    bg_color = "#fff3e0"
+                    border_color = "#FF9800"
+                    icon = "🟡"
+                
+                st.markdown(f"""
+                <div style='background: {bg_color}; 
+                           border-left: 4px solid {border_color}; 
+                           padding: 1rem; 
+                           margin: 0.5rem 0; 
+                           border-radius: 8px;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;'>
+                        <div style='flex: 1; min-width: 120px;'>
+                            <h3 style='margin: 0; font-size: 1.5rem;'>{icon} {result['Stock']}</h3>
+                            <p style='margin: 0.25rem 0; color: #666;'>Signal: <strong>{result['Signal']}</strong></p>
+                        </div>
+                        <div style='flex: 1; min-width: 120px; text-align: center;'>
+                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Price</p>
+                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['Price']}</p>
+                            <p style='margin: 0; color: {"#4CAF50" if "+" in result['Change'] else "#f44336"}; font-weight: bold;'>{result['Change']}</p>
+                        </div>
+                        <div style='flex: 1; min-width: 120px; text-align: center;'>
+                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Strength</p>
+                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['Strength']}</p>
+                        </div>
+                        <div style='flex: 1; min-width: 120px; text-align: center;'>
+                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>RSI</p>
+                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['RSI']}</p>
+                        </div>
+                        <div style='flex: 1; min-width: 120px; text-align: center;'>
+                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Volume</p>
+                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['Volume']}</p>
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
             
             col1, col2 = st.columns(2)
             

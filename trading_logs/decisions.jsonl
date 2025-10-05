@@ -6,3 +6,8 @@
 {"timestamp": "2025-10-05T18:36:47.135702", "type": "decision", "symbol": "GOOGL", "signal": "HOLD", "strategy": "Hybrid Strategy", "confidence": 0.0934, "executed": false, "reason": "evaluating"}
 {"timestamp": "2025-10-05T18:36:47.827055", "type": "decision", "symbol": "TSLA", "signal": "HOLD", "strategy": "Hybrid Strategy", "confidence": 0.07553629001821528, "executed": false, "reason": "evaluating"}
 {"timestamp": "2025-10-05T18:36:48.577723", "type": "decision", "symbol": "AMZN", "signal": "HOLD", "strategy": "Hybrid Strategy", "confidence": 0.10139999999999999, "executed": false, "reason": "evaluating"}
+{"timestamp": "2025-10-05T20:17:30.917637", "type": "decision", "symbol": "AAPL", "signal": "HOLD", "strategy": "Hybrid Strategy", "confidence": 0.037089127386293136, "executed": false, "reason": "evaluating"}
+{"timestamp": "2025-10-05T20:17:31.315091", "type": "decision", "symbol": "MSFT", "signal": "HOLD", "strategy": "Hybrid Strategy", "confidence": 0.06, "executed": false, "reason": "evaluating"}
+{"timestamp": "2025-10-05T20:17:31.723802", "type": "decision", "symbol": "GOOGL", "signal": "HOLD", "strategy": "Hybrid Strategy", "confidence": 0.06, "executed": false, "reason": "evaluating"}
+{"timestamp": "2025-10-05T20:17:32.125856", "type": "decision", "symbol": "TSLA", "signal": "HOLD", "strategy": "Hybrid Strategy", "confidence": 0.04893629001821529, "executed": false, "reason": "evaluating"}
+{"timestamp": "2025-10-05T20:17:32.632787", "type": "decision", "symbol": "AMZN", "signal": "HOLD", "strategy": "Hybrid Strategy", "confidence": 0.06, "executed": false, "reason": "evaluating"}

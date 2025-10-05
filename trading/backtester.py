@@ -240,7 +240,8 @@ class Backtester:
                 'total_trades': len(trades),
                 'completed_trades': 0,
                 'win_rate': 0,
-                'message': 'No completed trades'
+                'message': 'No completed trades',
+                'equity_curve': history
             }
         
         wins = [t for t in completed_trades if t['pnl'] > 0]

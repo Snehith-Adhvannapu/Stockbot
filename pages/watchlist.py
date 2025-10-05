@@ -84,7 +84,8 @@ def show():
                     volume = df['volume'].iloc[-1]
                     
                     try:
-                        rsi = calc.calculate_rsi(df['close'])
+                        close_series = df['close']
+                        rsi = calc.calculate_rsi(close_series)
                         current_rsi = rsi.iloc[-1] if len(rsi) > 0 else 50
                     except:
                         current_rsi = 50

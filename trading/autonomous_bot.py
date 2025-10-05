@@ -22,6 +22,7 @@ class AutonomousTradingBot:
         update_interval: int = 300
     ):
         self.watchlist = watchlist
+        self.strategy_name = strategy_name
         self.paper_mode = paper_mode
         self.update_interval = update_interval
         
@@ -38,6 +39,8 @@ class AutonomousTradingBot:
         self.running = False
         self.bot_thread = None
         self.position_tracker = {}
+        self.current_activity = "Initializing..."
+        self.recent_signals = []
         
         self._initialize()
     
@@ -101,23 +104,29 @@ class AutonomousTradingBot:
     
     def _execute_trading_cycle(self):
         """Execute one trading cycle"""
+        self.current_activity = "Starting trading cycle..."
         print(f"\n{'='*60}")
         print(f"Trading Cycle - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"{'='*60}")
         
+        self.current_activity = "Fetching account information..."
         account_info = self.trading_agent.get_account_info()
         
         if 'error' in account_info:
             print(f"Error getting account info: {account_info['error']}")
+            self.current_activity = f"Error: {account_info['error']}"
             return
         
         portfolio_value = float(account_info.get('portfolio_value', 0))
         cash = float(account_info.get('cash', 0))
         
+        self.current_activity = "Checking current positions..."
         positions = self.trading_agent.get_positions()
         
+        self.current_activity = "Evaluating exit conditions..."
         self._check_exit_conditions(positions)
         
+        self.current_activity = "Scanning for entry opportunities..."
         self._check_entry_opportunities(portfolio_value, len(positions))
         
         unrealized_pnl = sum(float(pos.get('unrealized_pl', 0)) for pos in positions if 'error' not in pos)
@@ -134,6 +143,8 @@ class AutonomousTradingBot:
         print(f"Cash: ${cash:,.2f}")
         print(f"Positions: {len(positions)}")
         print(f"Unrealized P/L: ${unrealized_pnl:,.2f}")
+        
+        self.current_activity = f"Monitoring - Portfolio: ${portfolio_value:,.2f}"
     
     def _check_exit_conditions(self, positions: List[Dict]):
         """Check if any positions should be exited"""
@@ -216,6 +227,17 @@ class AutonomousTradingBot:
             
             signal = strategy_result['signal']
             confidence = strategy_result['confidence']
+            
+            self.recent_signals.append({
+                'symbol': symbol,
+                'signal': signal,
+                'confidence': confidence,
+                'strategy': strategy_result['strategy'],
+                'timestamp': datetime.now()
+            })
+            
+            if len(self.recent_signals) > 10:
+                self.recent_signals = self.recent_signals[-10:]
             
             self.logger.log_decision(
                 symbol=symbol,
@@ -308,7 +330,9 @@ class AutonomousTradingBot:
             'positions': positions,
             'market_data': market_summary,
             'logs': log_stats,
-            'active_strategy': self.strategy_engine.active_strategy.name if self.strategy_engine.active_strategy else None
+            'active_strategy': self.strategy_engine.active_strategy.name if self.strategy_engine.active_strategy else None,
+            'current_activity': self.current_activity,
+            'recent_signals': self.recent_signals
         }
     
     def get_performance_metrics(self) -> Dict:

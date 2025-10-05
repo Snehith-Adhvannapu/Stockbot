@@ -34,6 +34,9 @@ def show():
         with col3:
             st.info(f"**Watching:** {len(bot.watchlist)} stocks")
         
+        if hasattr(bot, 'current_activity') and bot.current_activity:
+            st.info(f"💡 **Current Activity:** {bot.current_activity}")
+        
         try:
             status = bot.get_status()
             account = status.get('account', {})

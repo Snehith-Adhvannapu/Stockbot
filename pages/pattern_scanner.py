@@ -130,11 +130,11 @@ def show():
                             <p style='margin: 0.5rem 0; color: #1a1a1a; font-size: 1.1rem;'>Signal: <strong>{result['Signal']}</strong></p>
                         </div>
                         <div style='flex: 3; min-width: 200px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
-                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Pattern Detected</p>
-                            <p style='margin: 0.5rem 0; font-size: 1.4rem; font-weight: bold; color: #1a1a1a;'>{result['Pattern']}</p>
+                            <p style='margin: 0; color: #0d47a1; font-size: 1rem; font-weight: 600;'>Pattern Detected</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.4rem; font-weight: bold; color: #1a237e;'>{result['Pattern']}</p>
                         </div>
                         <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
-                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Confidence</p>
+                            <p style='margin: 0; color: #0d47a1; font-size: 1rem; font-weight: 600;'>Confidence</p>
                             <p style='margin: 0.5rem 0; font-size: 1.6rem; font-weight: bold; color: {border_color};'>{result['Confidence']}</p>
                         </div>
                     </div>

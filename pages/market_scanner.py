@@ -238,21 +238,21 @@ def show():
                             <p style='margin: 0.5rem 0; color: #1a1a1a; font-size: 1.1rem;'>Signal: <strong>{result['Signal']}</strong></p>
                         </div>
                         <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
-                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Price</p>
-                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a1a1a;'>{result['Price']}</p>
+                            <p style='margin: 0; color: #0d47a1; font-size: 1rem; font-weight: 600;'>Price</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a237e;'>{result['Price']}</p>
                             <p style='margin: 0; color: {"#2e7d32" if "+" in result['Change'] else "#c62828"}; font-weight: bold; font-size: 1.1rem;'>{result['Change']}</p>
                         </div>
                         <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
-                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Strength</p>
-                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a1a1a;'>{result['Strength']}</p>
+                            <p style='margin: 0; color: #0d47a1; font-size: 1rem; font-weight: 600;'>Strength</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a237e;'>{result['Strength']}</p>
                         </div>
                         <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
-                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>RSI</p>
-                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a1a1a;'>{result['RSI']}</p>
+                            <p style='margin: 0; color: #0d47a1; font-size: 1rem; font-weight: 600;'>RSI</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a237e;'>{result['RSI']}</p>
                         </div>
                         <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
-                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Volume</p>
-                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a1a1a;'>{result['Volume']}</p>
+                            <p style='margin: 0; color: #0d47a1; font-size: 1rem; font-weight: 600;'>Volume</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a237e;'>{result['Volume']}</p>
                         </div>
                     </div>
                 </div>

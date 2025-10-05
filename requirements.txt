@@ -13,3 +13,16 @@ spacy>=3.8.7
 streamlit>=1.46.1
 trafilatura>=2.0.0
 yfinance>=0.2.64
+streamlit
+alpaca-py
+beautifulsoup4
+nltk
+numpy
+pandas
+plotly
+python-dotenv
+requests
+spacy
+streamlit
+trafilatura
+yfinance

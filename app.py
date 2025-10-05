@@ -116,9 +116,9 @@ def main():
             <h3 style='color: #667eea;'>Smart Analysis</h3>
             <ul style='text-align: left; color: {theme['text_secondary']};'>
                 <li>AI recommendations</li>
-                <li>Pattern detection</li>
                 <li>Strategy backtesting</li>
-                <li>Market scanning</li>
+                <li>Portfolio tracking</li>
+                <li>Technical analysis</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -192,8 +192,6 @@ if __name__ == "__main__":
                 "💼 Portfolio": 'portfolio',
                 "👁️ Watchlist": 'watchlist',
                 "📈 Charts": 'charts',
-                "🔍 Scanner": 'scanner',
-                "🎯 Patterns": 'patterns',
                 "⏮️ Backtest": 'backtesting',
                 "❓ Help": 'help'
             }
@@ -218,15 +216,9 @@ if __name__ == "__main__":
             elif page == 'backtesting':
                 from pages import backtesting
                 backtesting.show()
-            elif page == 'scanner':
-                from pages import market_scanner
-                market_scanner.show()
             elif page == 'charts':
                 from pages import charting
                 charting.show()
-            elif page == 'patterns':
-                from pages import pattern_scanner
-                pattern_scanner.show()
             elif page == 'watchlist':
                 from pages import watchlist
                 watchlist.show()

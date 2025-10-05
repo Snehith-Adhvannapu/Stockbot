@@ -22,16 +22,56 @@ def show():
         if st.button("🔄 Refresh Prices", use_container_width=True):
             st.rerun()
     
+    st.markdown("### Quick Add Stocks")
+    
+    popular_stocks = {
+        "🇺🇸 Tech": ["AAPL", "MSFT", "GOOGL", "META", "NVDA", "TSLA", "AMZN", "NFLX", "AMD", "INTC"],
+        "🇺🇸 Banking": ["JPM", "BAC", "WFC", "C", "GS", "MS"],
+        "🇺🇸 Healthcare": ["JNJ", "UNH", "PFE", "ABBV", "TMO", "MRK"],
+        "🇺🇸 Consumer": ["WMT", "HD", "NKE", "SBUX", "MCD", "DIS"],
+        "🇮🇳 Tech": ["TCS.NS", "INFY.NS", "HCLTECH.NS", "WIPRO.NS", "TECHM.NS"],
+        "🇮🇳 Banking": ["HDFCBANK.NS", "ICICIBANK.NS", "SBIN.NS", "KOTAKBANK.NS", "AXISBANK.NS"],
+        "🇮🇳 Auto": ["MARUTI.NS", "TATAMOTORS.NS", "M&M.NS", "BAJAJ-AUTO.NS", "EICHERMOT.NS"],
+        "🇮🇳 Pharma": ["SUNPHARMA.NS", "DRREDDY.NS", "CIPLA.NS", "DIVISLAB.NS", "BIOCON.NS"]
+    }
+    
+    col1, col2, col3 = st.columns([2, 2, 1])
+    
+    with col1:
+        selected_category = st.selectbox(
+            "Select Category:",
+            options=list(popular_stocks.keys())
+        )
+    
+    with col2:
+        selected_stock = st.selectbox(
+            "Select Stock:",
+            options=popular_stocks[selected_category]
+        )
+    
+    with col3:
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("➕ Add", use_container_width=True, key="add_preset"):
+            if selected_stock not in st.session_state.watchlist:
+                st.session_state.watchlist.append(selected_stock)
+                st.success(f"Added {selected_stock}")
+                time.sleep(0.5)
+                st.rerun()
+            else:
+                st.warning(f"{selected_stock} already in watchlist")
+    
+    st.markdown("### Or Add Custom Stock")
+    
     col1, col2 = st.columns([2, 1])
     
     with col1:
         new_symbol = st.text_input(
-            "Add a stock:",
-            placeholder="Enter symbol (e.g., AAPL)",
-            max_chars=10
+            "Enter stock symbol:",
+            placeholder="e.g., AAPL or RELIANCE.NS",
+            max_chars=20
         ).upper()
         
-        if st.button("➕ Add to Watchlist", use_container_width=True):
+        if st.button("➕ Add Custom Stock", use_container_width=True):
             if new_symbol and new_symbol not in st.session_state.watchlist:
                 st.session_state.watchlist.append(new_symbol)
                 st.success(f"Added {new_symbol}")
@@ -41,7 +81,8 @@ def show():
                 st.warning(f"{new_symbol} is already in your watchlist")
     
     with col2:
-        if st.button("🗑️ Clear Watchlist", use_container_width=True):
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("🗑️ Clear All", use_container_width=True):
             if st.session_state.get('confirm_clear'):
                 st.session_state.watchlist = []
                 st.session_state.confirm_clear = False
@@ -149,32 +190,33 @@ def show():
                     
                     st.markdown(f"""
                     <div style='background: {bg_color}; 
-                               border-left: 4px solid {border_color}; 
-                               padding: 1rem; 
-                               margin: 0.5rem 0; 
-                               border-radius: 8px;'>
-                        <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;'>
-                            <div style='flex: 1; min-width: 100px;'>
-                                <h3 style='margin: 0; font-size: 1.5rem;'>{icon} {stock_data['Symbol']}</h3>
+                               border: 3px solid {border_color}; 
+                               padding: 1.5rem; 
+                               margin: 1rem 0; 
+                               border-radius: 12px;
+                               box-shadow: 0 4px 6px rgba(0,0,0,0.1);'>
+                        <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;'>
+                            <div style='flex: 1; min-width: 150px;'>
+                                <h2 style='margin: 0; font-size: 2rem; font-weight: bold;'>{icon} {stock_data['Symbol']}</h2>
                             </div>
-                            <div style='flex: 1; min-width: 100px; text-align: center;'>
-                                <p style='margin: 0; color: #666; font-size: 0.9rem;'>Price</p>
-                                <p style='margin: 0; font-size: 1.3rem; font-weight: bold;'>{stock_data['Price']}</p>
-                                <p style='margin: 0; color: {border_color}; font-weight: bold;'>{stock_data['Change %']}</p>
+                            <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                                <p style='margin: 0; color: #666; font-size: 1rem; font-weight: 600;'>Price</p>
+                                <p style='margin: 0.5rem 0; font-size: 1.8rem; font-weight: bold;'>{stock_data['Price']}</p>
+                                <p style='margin: 0; color: {border_color}; font-weight: bold; font-size: 1.2rem;'>{stock_data['Change %']}</p>
                             </div>
-                            <div style='flex: 1; min-width: 100px; text-align: center;'>
-                                <p style='margin: 0; color: #666; font-size: 0.9rem;'>High / Low</p>
-                                <p style='margin: 0; font-size: 1.1rem;'>{stock_data['High']}</p>
-                                <p style='margin: 0; font-size: 1.1rem;'>{stock_data['Low']}</p>
+                            <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                                <p style='margin: 0; color: #666; font-size: 1rem; font-weight: 600;'>High / Low</p>
+                                <p style='margin: 0.25rem 0; font-size: 1.3rem; font-weight: 600;'>{stock_data['High']}</p>
+                                <p style='margin: 0; font-size: 1.3rem; font-weight: 600;'>{stock_data['Low']}</p>
                             </div>
-                            <div style='flex: 1; min-width: 100px; text-align: center;'>
-                                <p style='margin: 0; color: #666; font-size: 0.9rem;'>Volume</p>
-                                <p style='margin: 0; font-size: 1.1rem;'>{stock_data['Volume']}</p>
+                            <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                                <p style='margin: 0; color: #666; font-size: 1rem; font-weight: 600;'>Volume</p>
+                                <p style='margin: 0.5rem 0; font-size: 1.3rem; font-weight: 600;'>{stock_data['Volume']}</p>
                             </div>
-                            <div style='flex: 1; min-width: 100px; text-align: center;'>
-                                <p style='margin: 0; color: #666; font-size: 0.9rem;'>RSI</p>
-                                <p style='margin: 0; font-size: 1.3rem; font-weight: bold; color: {rsi_color};'>{stock_data['RSI']}</p>
-                                <p style='margin: 0; font-size: 0.85rem; color: {rsi_color};'>{rsi_status}</p>
+                            <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                                <p style='margin: 0; color: #666; font-size: 1rem; font-weight: 600;'>RSI</p>
+                                <p style='margin: 0.5rem 0; font-size: 1.8rem; font-weight: bold; color: {rsi_color};'>{stock_data['RSI']}</p>
+                                <p style='margin: 0; font-size: 1rem; font-weight: 600; color: {rsi_color};'>{rsi_status}</p>
                             </div>
                         </div>
                     </div>

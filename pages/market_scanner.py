@@ -227,31 +227,32 @@ def show():
                 
                 st.markdown(f"""
                 <div style='background: {bg_color}; 
-                           border-left: 4px solid {border_color}; 
-                           padding: 1rem; 
-                           margin: 0.5rem 0; 
-                           border-radius: 8px;'>
-                    <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;'>
-                        <div style='flex: 1; min-width: 120px;'>
-                            <h3 style='margin: 0; font-size: 1.5rem;'>{icon} {result['Stock']}</h3>
-                            <p style='margin: 0.25rem 0; color: #666;'>Signal: <strong>{result['Signal']}</strong></p>
+                           border: 3px solid {border_color}; 
+                           padding: 1.5rem; 
+                           margin: 1rem 0; 
+                           border-radius: 12px;
+                           box-shadow: 0 4px 6px rgba(0,0,0,0.1);'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;'>
+                        <div style='flex: 1; min-width: 150px;'>
+                            <h2 style='margin: 0; font-size: 2rem; font-weight: bold; color: #1a1a1a;'>{icon} {result['Stock']}</h2>
+                            <p style='margin: 0.5rem 0; color: #1a1a1a; font-size: 1.1rem;'>Signal: <strong>{result['Signal']}</strong></p>
                         </div>
-                        <div style='flex: 1; min-width: 120px; text-align: center;'>
-                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Price</p>
-                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['Price']}</p>
-                            <p style='margin: 0; color: {"#4CAF50" if "+" in result['Change'] else "#f44336"}; font-weight: bold;'>{result['Change']}</p>
+                        <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Price</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a1a1a;'>{result['Price']}</p>
+                            <p style='margin: 0; color: {"#2e7d32" if "+" in result['Change'] else "#c62828"}; font-weight: bold; font-size: 1.1rem;'>{result['Change']}</p>
                         </div>
-                        <div style='flex: 1; min-width: 120px; text-align: center;'>
-                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Strength</p>
-                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['Strength']}</p>
+                        <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Strength</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a1a1a;'>{result['Strength']}</p>
                         </div>
-                        <div style='flex: 1; min-width: 120px; text-align: center;'>
-                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>RSI</p>
-                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['RSI']}</p>
+                        <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>RSI</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a1a1a;'>{result['RSI']}</p>
                         </div>
-                        <div style='flex: 1; min-width: 120px; text-align: center;'>
-                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Volume</p>
-                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['Volume']}</p>
+                        <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Volume</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.5rem; font-weight: bold; color: #1a1a1a;'>{result['Volume']}</p>
                         </div>
                     </div>
                 </div>

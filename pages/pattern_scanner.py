@@ -119,22 +119,23 @@ def show():
                 
                 st.markdown(f"""
                 <div style='background: {bg_color}; 
-                           border-left: 4px solid {border_color}; 
-                           padding: 1rem; 
-                           margin: 0.5rem 0; 
-                           border-radius: 8px;'>
-                    <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;'>
+                           border: 3px solid {border_color}; 
+                           padding: 1.5rem; 
+                           margin: 1rem 0; 
+                           border-radius: 12px;
+                           box-shadow: 0 4px 6px rgba(0,0,0,0.1);'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;'>
                         <div style='flex: 2; min-width: 150px;'>
-                            <h3 style='margin: 0; font-size: 1.5rem;'>{icon} {result['Stock']}</h3>
-                            <p style='margin: 0.25rem 0; color: #666;'>Signal: <strong>{result['Signal']}</strong></p>
+                            <h2 style='margin: 0; font-size: 2rem; font-weight: bold; color: #1a1a1a;'>{icon} {result['Stock']}</h2>
+                            <p style='margin: 0.5rem 0; color: #1a1a1a; font-size: 1.1rem;'>Signal: <strong>{result['Signal']}</strong></p>
                         </div>
-                        <div style='flex: 3; min-width: 200px; text-align: center;'>
-                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Pattern Detected</p>
-                            <p style='margin: 0; font-size: 1.2rem; font-weight: bold;'>{result['Pattern']}</p>
+                        <div style='flex: 3; min-width: 200px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Pattern Detected</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.4rem; font-weight: bold; color: #1a1a1a;'>{result['Pattern']}</p>
                         </div>
-                        <div style='flex: 1; min-width: 120px; text-align: center;'>
-                            <p style='margin: 0; color: #666; font-size: 0.9rem;'>Confidence</p>
-                            <p style='margin: 0; font-size: 1.3rem; font-weight: bold; color: {border_color};'>{result['Confidence']}</p>
+                        <div style='flex: 1; min-width: 120px; text-align: center; background: white; padding: 1rem; border-radius: 8px;'>
+                            <p style='margin: 0; color: #1a1a1a; font-size: 1rem; font-weight: 600;'>Confidence</p>
+                            <p style='margin: 0.5rem 0; font-size: 1.6rem; font-weight: bold; color: {border_color};'>{result['Confidence']}</p>
                         </div>
                     </div>
                 </div>

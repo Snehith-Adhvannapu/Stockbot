@@ -312,35 +312,98 @@ def show():
                 emoji = "🟡"
             
             with st.expander(f"{emoji} **{stock}** - {recommendation} (Score: {score:.1f})"):
-                col1, col2, col3 = st.columns(3)
+                col1, col2, col3, col4 = st.columns(4)
                 
                 with col1:
                     st.metric("Recommendation", recommendation)
                 with col2:
-                    st.metric("Score", f"{score:.1f}")
+                    st.metric("Overall Score", f"{score:.1f}")
                 with col3:
                     st.metric("Confidence", f"{confidence:.1f}%")
+                with col4:
+                    current_price = rec.get('current_price', 'N/A')
+                    if current_price != 'N/A':
+                        st.metric("Current Price", f"${current_price:.2f}" if isinstance(current_price, (int, float)) else current_price)
+                    else:
+                        st.metric("Current Price", "N/A")
                 
                 st.markdown("**Summary:**")
                 st.info(rec.get('reasoning', 'No summary available'))
                 
-                col1, col2 = st.columns(2)
+                st.markdown("---")
+                
+                col1, col2, col3 = st.columns(3)
                 
                 with col1:
-                    st.markdown("**📊 Fundamental Analysis**")
+                    st.markdown("**📊 Fundamental Metrics**")
                     fundamental_score = rec.get('fundamental_score', 0)
-                    st.write(f"Score: {fundamental_score:.1f}/100")
-                    
-                    st.write(f"P/E Ratio: {rec.get('pe_ratio', 'N/A')}")
-                    st.write(f"Market Cap: {rec.get('market_cap', 'N/A')}")
-                    st.write(f"ROE: {rec.get('roe', 'N/A')}")
+                    st.write(f"**Score:** {fundamental_score:.1f}/100")
+                    st.write(f"**P/E Ratio:** {rec.get('pe_ratio', 'N/A')}")
+                    st.write(f"**P/B Ratio:** {rec.get('pb_ratio', 'N/A')}")
+                    st.write(f"**ROE:** {rec.get('roe', 'N/A')}")
+                    st.write(f"**Debt/Equity:** {rec.get('debt_equity', 'N/A')}")
+                    st.write(f"**Profit Margin:** {rec.get('profit_margin', 'N/A')}")
                 
                 with col2:
-                    st.markdown("**💭 Sentiment Analysis**")
+                    st.markdown("**💰 Valuation & Size**")
+                    st.write(f"**Market Cap:** {rec.get('market_cap', 'N/A')}")
+                    st.write(f"**52W High:** {rec.get('week_52_high', 'N/A')}")
+                    st.write(f"**52W Low:** {rec.get('week_52_low', 'N/A')}")
+                    st.write(f"**Volume:** {rec.get('volume', 'N/A')}")
+                    st.write(f"**Avg Volume:** {rec.get('avg_volume', 'N/A')}")
+                    st.write(f"**Dividend Yield:** {rec.get('dividend_yield', 'N/A')}")
+                
+                with col3:
+                    st.markdown("**💭 Sentiment & News**")
                     sentiment_score = rec.get('sentiment_score', 0)
-                    st.write(f"Score: {sentiment_score:.1f}/100")
-                    st.write(f"News Articles: {rec.get('total_articles', 0)}")
-                    st.write(f"Avg Sentiment: {rec.get('avg_sentiment', 0):.2f}")
+                    st.write(f"**Score:** {sentiment_score:.1f}/100")
+                    st.write(f"**Total Articles:** {rec.get('total_articles', 0)}")
+                    st.write(f"**Avg Sentiment:** {rec.get('avg_sentiment', 0):.2f}")
+                    
+                    positive_count = rec.get('positive_articles', 0)
+                    neutral_count = rec.get('neutral_articles', 0)
+                    negative_count = rec.get('negative_articles', 0)
+                    st.write(f"**Positive News:** {positive_count}")
+                    st.write(f"**Neutral News:** {neutral_count}")
+                    st.write(f"**Negative News:** {negative_count}")
+                
+                fundamental_data = analysis.get('fundamental', {})
+                if fundamental_data and isinstance(fundamental_data, dict):
+                    st.markdown("---")
+                    st.markdown("**📈 Additional Financial Data**")
+                    
+                    col1, col2, col3 = st.columns(3)
+                    
+                    with col1:
+                        eps = fundamental_data.get('eps', 'N/A')
+                        revenue = fundamental_data.get('revenue', 'N/A')
+                        st.write(f"**EPS:** {eps}")
+                        st.write(f"**Revenue:** {revenue}")
+                    
+                    with col2:
+                        operating_margin = fundamental_data.get('operating_margin', 'N/A')
+                        gross_margin = fundamental_data.get('gross_margin', 'N/A')
+                        st.write(f"**Operating Margin:** {operating_margin}")
+                        st.write(f"**Gross Margin:** {gross_margin}")
+                    
+                    with col3:
+                        quick_ratio = fundamental_data.get('quick_ratio', 'N/A')
+                        current_ratio = fundamental_data.get('current_ratio', 'N/A')
+                        st.write(f"**Quick Ratio:** {quick_ratio}")
+                        st.write(f"**Current Ratio:** {current_ratio}")
+                
+                sentiment_data = analysis.get('sentiment', {})
+                if sentiment_data and isinstance(sentiment_data, dict):
+                    news_items = sentiment_data.get('news_items', [])
+                    if news_items:
+                        st.markdown("---")
+                        st.markdown("**📰 Recent News Headlines**")
+                        
+                        for i, news in enumerate(news_items[:5]):
+                            title = news.get('title', 'No title')
+                            sentiment_label = news.get('sentiment_label', 'neutral')
+                            sentiment_icon = "🟢" if sentiment_label == 'positive' else "🔴" if sentiment_label == 'negative' else "🟡"
+                            st.write(f"{sentiment_icon} {title}")
         
         st.markdown("---")
         

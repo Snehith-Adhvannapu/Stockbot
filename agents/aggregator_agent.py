@@ -83,15 +83,52 @@ class AggregatorAgent:
                 },
                 'analysis_timestamp': time.time(),
                 
-                # Include key metrics for display
+                # Valuation metrics
                 'current_price': fundamental_data.get('current_price', 'N/A'),
                 'market_cap': fundamental_data.get('market_cap', 'N/A'),
                 'pe_ratio': fundamental_data.get('pe_ratio', 'N/A'),
+                'forward_pe': fundamental_data.get('forward_pe', 'N/A'),
                 'pb_ratio': fundamental_data.get('pb_ratio', 'N/A'),
+                'ps_ratio': fundamental_data.get('ps_ratio', 'N/A'),
+                'peg_ratio': fundamental_data.get('peg_ratio', 'N/A'),
+                
+                # Profitability metrics
                 'roe': fundamental_data.get('roe', 'N/A'),
+                'roa': fundamental_data.get('roa', 'N/A'),
+                'profit_margin': fundamental_data.get('profit_margin', 'N/A'),
+                'operating_margin': fundamental_data.get('operating_margin', 'N/A'),
+                'gross_margin': fundamental_data.get('gross_margin', 'N/A'),
+                
+                # Financial health
+                'debt_equity': fundamental_data.get('debt_to_equity', 'N/A'),
+                'current_ratio': fundamental_data.get('current_ratio', 'N/A'),
+                'quick_ratio': fundamental_data.get('quick_ratio', 'N/A'),
+                'total_cash': fundamental_data.get('total_cash', 'N/A'),
+                'total_debt': fundamental_data.get('total_debt', 'N/A'),
+                
+                # Growth and earnings
+                'revenue_growth': fundamental_data.get('revenue_growth', 'N/A'),
+                'earnings_growth': fundamental_data.get('earnings_growth', 'N/A'),
+                'eps': fundamental_data.get('eps', 'N/A'),
+                'revenue': fundamental_data.get('revenue', 'N/A'),
+                
+                # Dividend info
+                'dividend_yield': fundamental_data.get('dividend_yield', 'N/A'),
+                'payout_ratio': fundamental_data.get('payout_ratio', 'N/A'),
+                'dividend_rate': fundamental_data.get('dividend_rate', 'N/A'),
+                
+                # Trading data
+                'volume': fundamental_data.get('volume', 'N/A'),
+                'avg_volume': fundamental_data.get('avg_volume', 'N/A'),
+                'week_52_high': fundamental_data.get('52_week_high', 'N/A'),
+                'week_52_low': fundamental_data.get('52_week_low', 'N/A'),
+                'beta': fundamental_data.get('beta', 'N/A'),
+                
+                # Sentiment data
                 'avg_sentiment': sentiment_data.get('avg_sentiment', 'N/A'),
-                'positive_count': sentiment_data.get('positive_count', 0),
-                'negative_count': sentiment_data.get('negative_count', 0),
+                'positive_articles': sentiment_data.get('positive_count', 0),
+                'neutral_articles': sentiment_data.get('neutral_count', 0),
+                'negative_articles': sentiment_data.get('negative_count', 0),
                 'total_articles': sentiment_data.get('total_articles', 0),
                 
                 # Data quality indicators

@@ -106,6 +106,12 @@ This is a hackathon MVP designed for local demonstration:
 
 ## Recent Changes
 
+- **October 05, 2025**: Fixed critical bugs in autonomous trading bot and dashboard
+  - Added strategy_name attribute to AutonomousTradingBot class to fix dashboard AttributeError
+  - Implemented bot activity tracking (current_activity and recent_signals) for real-time monitoring
+  - Fixed watchlist RSI calculation type error with proper pd.Series conversion
+  - Created .env.example template file for API key management
+  - Enhanced dashboard to display bot's current activity status
 - **July 02, 2025**: Complete UI redesign with improved spacing, dark mode support, and enhanced text contrast
 - **July 02, 2025**: GitHub preparation with comprehensive documentation (README.md, CONTRIBUTING.md, LICENSE, .gitignore)
 - **July 02, 2025**: Added setup.py script for easy project initialization

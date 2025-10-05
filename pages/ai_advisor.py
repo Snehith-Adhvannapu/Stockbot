@@ -12,12 +12,18 @@ from utils.cache_manager import CacheManager
 from utils.data_normalizer import DataNormalizer
 
 SECTORS = {
-    "🖥️ IT & Tech": ["TCS", "INFY", "HCLTECH", "WIPRO", "TECHM"],
-    "🏦 Banking": ["HDFCBANK", "ICICIBANK", "SBI", "KOTAKBANK", "AXISBANK"],
-    "🚗 Auto": ["MARUTI", "TATAMOTORS", "M&M", "BAJAJ-AUTO", "EICHERMOT"],
-    "⚗️ Pharma": ["SUNPHARMA", "DRREDDY", "CIPLA", "DIVISLAB", "BIOCON"],
-    "🌿 Green Energy": ["ADANIGREEN", "SUZLON", "TATAPOWER", "NTPC", "POWERGRID"],
-    "🏭 Diversified": ["RELIANCE", "ITC", "HINDUNILVR", "LT", "ASIANPAINT"]
+    "🖥️ IT & Tech (India)": ["TCS", "INFY", "HCLTECH", "WIPRO", "TECHM"],
+    "🖥️ IT & Tech (US)": ["AAPL", "MSFT", "GOOGL", "META", "NVDA"],
+    "🏦 Banking (India)": ["HDFCBANK", "ICICIBANK", "SBI", "KOTAKBANK", "AXISBANK"],
+    "🏦 Banking (US)": ["JPM", "BAC", "WFC", "C", "GS"],
+    "🚗 Auto (India)": ["MARUTI", "TATAMOTORS", "M&M", "BAJAJ-AUTO", "EICHERMOT"],
+    "🚗 Auto (US)": ["TSLA", "F", "GM", "RIVN", "LCID"],
+    "⚗️ Pharma (India)": ["SUNPHARMA", "DRREDDY", "CIPLA", "DIVISLAB", "BIOCON"],
+    "⚗️ Pharma (US)": ["PFE", "JNJ", "ABBV", "MRK", "LLY"],
+    "🌿 Green Energy (India)": ["ADANIGREEN", "SUZLON", "TATAPOWER", "NTPC", "POWERGRID"],
+    "🌿 Green Energy (US)": ["ENPH", "SEDG", "NEE", "FSLR", "RUN"],
+    "🏭 Diversified (India)": ["RELIANCE", "ITC", "HINDUNILVR", "LT", "ASIANPAINT"],
+    "🏭 Diversified (US)": ["BRK.B", "JNJ", "PG", "KO", "PEP"]
 }
 
 @st.cache_resource
@@ -119,7 +125,10 @@ def show():
                 all_results = []
                 
                 for idx, stock in enumerate(stocks_to_analyze):
-                    symbol = f"{stock}.NS"
+                    if "(India)" in selected_sector:
+                        symbol = f"{stock}.NS"
+                    else:
+                        symbol = stock
                     
                     status_text.text(f"Analyzing {stock} ({idx + 1}/{len(stocks_to_analyze)})...")
                     

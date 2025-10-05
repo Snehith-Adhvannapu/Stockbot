@@ -26,3 +26,4 @@ spacy
 streamlit
 trafilatura
 yfinance
+streamlit

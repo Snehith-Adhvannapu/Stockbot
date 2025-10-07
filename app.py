@@ -193,6 +193,7 @@ if __name__ == "__main__":
                 "👁️ Watchlist": 'watchlist',
                 "📈 Charts": 'charts',
                 "⏮️ Backtest": 'backtesting',
+                "☁️ Azure Cloud": 'azure',
                 "❓ Help": 'help'
             }
             
@@ -222,6 +223,9 @@ if __name__ == "__main__":
             elif page == 'watchlist':
                 from pages import watchlist
                 watchlist.show()
+            elif page == 'azure':
+                from pages import azure_admin
+                azure_admin.show()
             elif page == 'help':
                 from pages import help
                 help.show()

@@ -27,3 +27,5 @@ streamlit
 trafilatura
 yfinance
 streamlit
+azure-functions
+azure-storage-blob

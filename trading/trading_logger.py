@@ -7,7 +7,7 @@ from pathlib import Path
 class TradingLogger:
     """Comprehensive logging system for trading bot"""
     
-    def __init__(self, log_dir: str = "trading_logs"):
+    def __init__(self, log_dir: str = "trading_logs", enable_azure_backup: bool = True):
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(exist_ok=True)
         
@@ -15,6 +15,16 @@ class TradingLogger:
         self.decisions_log_file = self.log_dir / "decisions.jsonl"
         self.errors_log_file = self.log_dir / "errors.jsonl"
         self.performance_log_file = self.log_dir / "performance.jsonl"
+        
+        self.azure_storage = None
+        if enable_azure_backup:
+            try:
+                from utils.azure_storage import AzureBlobStorage
+                self.azure_storage = AzureBlobStorage()
+                if self.azure_storage.is_configured():
+                    print("Azure Blob Storage backup enabled")
+            except Exception as e:
+                print(f"Azure backup not available: {e}")
     
     def log_trade(
         self,
@@ -116,6 +126,13 @@ class TradingLogger:
         try:
             with open(file_path, 'a') as f:
                 f.write(json.dumps(log_entry) + '\n')
+            
+            if self.azure_storage and self.azure_storage.is_configured():
+                try:
+                    blob_name = f"logs/{datetime.now().strftime('%Y-%m-%d')}/{file_path.name}"
+                    self.azure_storage.upload_json_data(log_entry, blob_name)
+                except Exception as e:
+                    print(f"Azure backup failed (continuing locally): {e}")
         except Exception as e:
             print(f"Error writing to log file {file_path}: {e}")
     
@@ -184,6 +201,14 @@ class TradingLogger:
                 'performance': str(self.performance_log_file)
             }
         }
+    
+    def backup_to_azure(self) -> int:
+        """Manually trigger backup of all logs to Azure"""
+        if not self.azure_storage or not self.azure_storage.is_configured():
+            print("Azure Blob Storage not configured")
+            return 0
+        
+        return self.azure_storage.backup_trading_logs(str(self.log_dir))
     
     def clear_logs(self):
         """Clear all log files"""

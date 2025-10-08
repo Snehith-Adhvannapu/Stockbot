@@ -112,11 +112,6 @@ This is a hackathon MVP designed for local demonstration:
   - Fixed watchlist RSI calculation type error with proper pd.Series conversion
   - Created .env.example template file for API key management
   - Enhanced dashboard to display bot's current activity status
-- **July 02, 2025**: Complete UI redesign with improved spacing, dark mode support, and enhanced text contrast
-- **July 02, 2025**: GitHub preparation with comprehensive documentation (README.md, CONTRIBUTING.md, LICENSE, .gitignore)
-- **July 02, 2025**: Added setup.py script for easy project initialization
-- **July 02, 2025**: Enhanced stock analysis cards with better visual hierarchy and expandable details
-- **July 02, 2025**: Sector-based stock selection replacing web scraping approach
 
 ## GitHub Repository Structure
 

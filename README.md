@@ -9,7 +9,7 @@ A sophisticated multi-agent AI system that provides intelligent stock analysis a
 - **🎯 Sector-Based Analysis**: Choose from IT, Banking, Auto, Pharma, Green Energy, and Diversified sectors
 - **⚖️ Customizable Weighting**: Adjust balance between fundamental and sentiment analysis (0-100%)
 - **📊 Real-Time Data**: Live financial metrics via yfinance API
-- **📰 News Sentiment**: Latest market sentiment using NewsAPI + NLTK + spaCy
+- **📰 News Sentiment**: Latest market sentiment using NewsAPI + NLTK + spaCyy
 - **🔍 Interactive UI**: Modern Streamlit interface with expandable analysis cards
 - **📈 Visual Charts**: Performance comparison charts using Plotly
 - **💾 Smart Caching**: Two-tier caching system for optimal performance

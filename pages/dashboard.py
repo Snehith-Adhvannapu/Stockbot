@@ -46,17 +46,26 @@ def show():
             
             col1, col2, col3, col4 = st.columns(4)
             
+            # USD to INR conversion rate
+            usd_to_inr = 83.0
+            
             with col1:
-                st.metric("Portfolio Value", f"₹{float(account.get('portfolio_value', 0)):,.2f}")
+                portfolio_value_usd = float(account.get('portfolio_value', 0))
+                portfolio_value_inr = portfolio_value_usd * usd_to_inr
+                st.metric("Portfolio Value", f"₹{portfolio_value_inr:,.2f}")
             
             with col2:
-                st.metric("Cash", f"₹{float(account.get('cash', 0)):,.2f}")
+                cash_usd = float(account.get('cash', 0))
+                cash_inr = cash_usd * usd_to_inr
+                st.metric("Cash", f"₹{cash_inr:,.2f}")
             
             with col3:
                 st.metric("Positions", status.get('positions_count', 0))
             
             with col4:
-                st.metric("Buying Power", f"₹{float(account.get('buying_power', 0)):,.2f}")
+                buying_power_usd = float(account.get('buying_power', 0))
+                buying_power_inr = buying_power_usd * usd_to_inr
+                st.metric("Buying Power", f"₹{buying_power_inr:,.2f}")
             
             st.markdown("---")
             
@@ -68,15 +77,21 @@ def show():
                 
                 if positions and not any('error' in p for p in positions):
                     pos_data = []
+                    usd_to_inr = 83.0
+                    
                     for pos in positions:
-                        pnl = float(pos.get('unrealized_pl', 0))
+                        pnl_usd = float(pos.get('unrealized_pl', 0))
+                        pnl_inr = pnl_usd * usd_to_inr
                         pnl_pct = float(pos.get('unrealized_plpc', 0)) * 100
+                        
+                        market_value_usd = float(pos.get('market_value', 0))
+                        market_value_inr = market_value_usd * usd_to_inr
                         
                         pos_data.append({
                             'Stock': pos.get('symbol'),
                             'Shares': int(float(pos.get('qty', 0))),
-                            'Value': f"₹{float(pos.get('market_value', 0)):,.2f}",
-                            'P/L': f"₹{pnl:.2f} ({pnl_pct:+.1f}%)"
+                            'Value': f"₹{market_value_inr:,.2f}",
+                            'P/L': f"₹{pnl_inr:.2f} ({pnl_pct:+.1f}%)"
                         })
                     
                     df = pd.DataFrame(pos_data)
@@ -159,15 +174,22 @@ def show():
             
             if 'error' not in account:
                 col1, col2, col3 = st.columns(3)
+                usd_to_inr = 83.0
                 
                 with col1:
-                    st.metric("Account Value", f"₹{float(account.get('portfolio_value', 0)):,.2f}")
+                    portfolio_value_usd = float(account.get('portfolio_value', 0))
+                    portfolio_value_inr = portfolio_value_usd * usd_to_inr
+                    st.metric("Account Value", f"₹{portfolio_value_inr:,.2f}")
                 
                 with col2:
-                    st.metric("Available Cash", f"₹{float(account.get('cash', 0)):,.2f}")
+                    cash_usd = float(account.get('cash', 0))
+                    cash_inr = cash_usd * usd_to_inr
+                    st.metric("Available Cash", f"₹{cash_inr:,.2f}")
                 
                 with col3:
-                    st.metric("Buying Power", f"₹{float(account.get('buying_power', 0)):,.2f}")
+                    buying_power_usd = float(account.get('buying_power', 0))
+                    buying_power_inr = buying_power_usd * usd_to_inr
+                    st.metric("Buying Power", f"₹{buying_power_inr:,.2f}")
             else:
                 st.warning("⚠️ Cannot connect to trading account. Check your API credentials.")
                 st.info("💡 Make sure your Alpaca API keys are set correctly in the environment.")

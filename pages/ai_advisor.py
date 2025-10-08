@@ -323,7 +323,7 @@ def show():
                 with col4:
                     current_price = rec.get('current_price', 'N/A')
                     if current_price != 'N/A':
-                        st.metric("Current Price", f"${current_price:.2f}" if isinstance(current_price, (int, float)) else current_price)
+                        st.metric("Current Price", f"₹{current_price:.2f}" if isinstance(current_price, (int, float)) else current_price)
                     else:
                         st.metric("Current Price", "N/A")
                 

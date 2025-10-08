@@ -543,8 +543,8 @@ def show_info(message: str):
     st.info(f"ℹ️ {message}")
 
 def format_currency(amount: float) -> str:
-    """Format a number as currency"""
-    return f"${amount:,.2f}"
+    """Format a number as currency in INR"""
+    return f"₹{amount:,.2f}"
 
 def format_percentage(value: float) -> str:
     """Format a number as percentage"""

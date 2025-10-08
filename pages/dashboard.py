@@ -47,16 +47,16 @@ def show():
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
-                st.metric("Portfolio Value", f"${float(account.get('portfolio_value', 0)):,.2f}")
+                st.metric("Portfolio Value", f"₹{float(account.get('portfolio_value', 0)):,.2f}")
             
             with col2:
-                st.metric("Cash", f"${float(account.get('cash', 0)):,.2f}")
+                st.metric("Cash", f"₹{float(account.get('cash', 0)):,.2f}")
             
             with col3:
                 st.metric("Positions", status.get('positions_count', 0))
             
             with col4:
-                st.metric("Buying Power", f"${float(account.get('buying_power', 0)):,.2f}")
+                st.metric("Buying Power", f"₹{float(account.get('buying_power', 0)):,.2f}")
             
             st.markdown("---")
             
@@ -75,8 +75,8 @@ def show():
                         pos_data.append({
                             'Stock': pos.get('symbol'),
                             'Shares': int(float(pos.get('qty', 0))),
-                            'Value': f"${float(pos.get('market_value', 0)):,.2f}",
-                            'P/L': f"${pnl:.2f} ({pnl_pct:+.1f}%)"
+                            'Value': f"₹{float(pos.get('market_value', 0)):,.2f}",
+                            'P/L': f"₹{pnl:.2f} ({pnl_pct:+.1f}%)"
                         })
                     
                     df = pd.DataFrame(pos_data)
@@ -161,13 +161,13 @@ def show():
                 col1, col2, col3 = st.columns(3)
                 
                 with col1:
-                    st.metric("Account Value", f"${float(account.get('portfolio_value', 0)):,.2f}")
+                    st.metric("Account Value", f"₹{float(account.get('portfolio_value', 0)):,.2f}")
                 
                 with col2:
-                    st.metric("Available Cash", f"${float(account.get('cash', 0)):,.2f}")
+                    st.metric("Available Cash", f"₹{float(account.get('cash', 0)):,.2f}")
                 
                 with col3:
-                    st.metric("Buying Power", f"${float(account.get('buying_power', 0)):,.2f}")
+                    st.metric("Buying Power", f"₹{float(account.get('buying_power', 0)):,.2f}")
             else:
                 st.warning("⚠️ Cannot connect to trading account. Check your API credentials.")
                 st.info("💡 Make sure your Alpaca API keys are set correctly in the environment.")

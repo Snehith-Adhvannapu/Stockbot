@@ -44,14 +44,14 @@ def show():
         with col1:
             st.metric(
                 "Total Portfolio",
-                f"${portfolio_value:,.2f}",
+                f"₹{portfolio_value:,.2f}",
                 help="Total value of cash + positions"
             )
         
         with col2:
             st.metric(
                 "Available Cash",
-                f"${cash:,.2f}",
+                f"₹{cash:,.2f}",
                 help="Cash ready to invest"
             )
         
@@ -65,7 +65,7 @@ def show():
         with col4:
             st.metric(
                 "Buying Power",
-                f"${buying_power:,.2f}",
+                f"₹{buying_power:,.2f}",
                 help="Maximum you can invest"
             )
         
@@ -122,10 +122,10 @@ def show():
             positions_data.append({
                 'Stock': pos.get('symbol'),
                 'Shares': int(float(pos.get('qty', 0))),
-                'Avg Cost': f"${float(pos.get('avg_entry_price', 0)):.2f}",
-                'Current': f"${float(pos.get('current_price', 0)):.2f}",
-                'Value': f"${market_value:,.2f}",
-                'P/L': f"${pnl:,.2f}",
+                'Avg Cost': f"₹{float(pos.get('avg_entry_price', 0)):.2f}",
+                'Current': f"₹{float(pos.get('current_price', 0)):.2f}",
+                'Value': f"₹{market_value:,.2f}",
+                'P/L': f"₹{pnl:,.2f}",
                 'Return': f"{pnl_pct:+.2f}%"
             })
         
@@ -136,11 +136,11 @@ def show():
         
         with col1:
             if total_pnl > 0:
-                st.success(f"**Total Profit**\n\n+${total_pnl:,.2f}")
+                st.success(f"**Total Profit**\n\n+₹{total_pnl:,.2f}")
             elif total_pnl < 0:
-                st.error(f"**Total Loss**\n\n${total_pnl:,.2f}")
+                st.error(f"**Total Loss**\n\n₹{total_pnl:,.2f}")
             else:
-                st.info(f"**Total P/L**\n\n${total_pnl:,.2f}")
+                st.info(f"**Total P/L**\n\n₹{total_pnl:,.2f}")
         
         with col2:
             avg_return = analysis['performance_metrics']['avg_return_pct']
@@ -161,8 +161,8 @@ def show():
                 st.markdown("**Performance**")
                 st.write(f"Winning Positions: {analysis['performance_metrics']['num_winners']}")
                 st.write(f"Losing Positions: {analysis['performance_metrics']['num_losers']}")
-                st.write(f"Average Win: ${analysis['performance_metrics'].get('avg_win', 0):,.2f}")
-                st.write(f"Average Loss: ${analysis['performance_metrics'].get('avg_loss', 0):,.2f}")
+                st.write(f"Average Win: ₹{analysis['performance_metrics'].get('avg_win', 0):,.2f}")
+                st.write(f"Average Loss: ₹{analysis['performance_metrics'].get('avg_loss', 0):,.2f}")
             
             with col2:
                 st.markdown("**Risk Metrics**")

@@ -77,6 +77,8 @@ class FundamentalAgent:
                 'industry': info.get('industry', 'N/A'),
                 'market_cap': self._format_large_number(info.get('marketCap'), display_currency),
                 'current_price': self._format_currency(converted_price, display_currency),
+                'current_price_raw': converted_price,  # Keep raw numeric value for calculations
+                'current_price_usd': current_price if currency == 'USD' else None,  # Original USD price
                 'currency': display_currency,
 
                 # Valuation ratios
@@ -114,8 +116,10 @@ class FundamentalAgent:
                 'beta': info.get('beta'),
                 'volume': info.get('volume'),
                 'avg_volume': info.get('averageVolume'),
-                '52_week_high': self._format_currency(info.get('fiftyTwoWeekHigh'), display_currency),
-                '52_week_low': self._format_currency(info.get('fiftyTwoWeekLow'), display_currency),
+                '52_week_high': self._format_currency(info.get('fiftyTwoWeekHigh'), display_currency) if info.get('fiftyTwoWeekHigh') else 'N/A',
+                '52_week_low': self._format_currency(info.get('fiftyTwoWeekLow'), display_currency) if info.get('fiftyTwoWeekLow') else 'N/A',
+                '52_week_high_raw': info.get('fiftyTwoWeekHigh'),
+                '52_week_low_raw': info.get('fiftyTwoWeekLow'),
 
 
                 # Additional metrics from financials

@@ -186,16 +186,6 @@ def show():
                         sentiment_result = sentiment_agent.analyze_sentiment(symbol, stock)
                         fundamental_result = fundamental_agent.analyze_stock(symbol)
                         
-                        # Convert USD prices to INR for US stocks
-                        if not is_indian and fundamental_result:
-                            if 'current_price' in fundamental_result and fundamental_result['current_price'] != 'N/A':
-                                fundamental_result['current_price_usd'] = fundamental_result['current_price']
-                                fundamental_result['current_price'] = fundamental_result['current_price'] * usd_to_inr
-                            if 'week_52_high' in fundamental_result and fundamental_result['week_52_high'] != 'N/A':
-                                fundamental_result['week_52_high'] = fundamental_result['week_52_high'] * usd_to_inr
-                            if 'week_52_low' in fundamental_result and fundamental_result['week_52_low'] != 'N/A':
-                                fundamental_result['week_52_low'] = fundamental_result['week_52_low'] * usd_to_inr
-                        
                         final_recommendation = aggregator_agent.aggregate_scores(
                             ticker=symbol,
                             company_name=stock,
@@ -338,11 +328,11 @@ def show():
                 with col4:
                     current_price = rec.get('current_price', 'N/A')
                     current_price_usd = analysis.get('fundamental', {}).get('current_price_usd')
-                    if current_price != 'N/A' and isinstance(current_price, (int, float)):
-                        if current_price_usd:
-                            st.metric("Current Price", f"₹{current_price:.2f}", delta=f"${current_price_usd:.2f}")
-                        else:
-                            st.metric("Current Price", f"₹{current_price:.2f}")
+                    
+                    if current_price_usd and isinstance(current_price_usd, (int, float)):
+                        st.metric("Current Price", current_price, delta=f"${current_price_usd:.2f} USD")
+                    elif current_price != 'N/A':
+                        st.metric("Current Price", current_price)
                     else:
                         st.metric("Current Price", "N/A")
                 
@@ -366,19 +356,8 @@ def show():
                 with col2:
                     st.markdown("**💰 Valuation & Size**")
                     st.write(f"**Market Cap:** {rec.get('market_cap', 'N/A')}")
-                    
-                    week_52_high = rec.get('week_52_high', 'N/A')
-                    if week_52_high != 'N/A' and isinstance(week_52_high, (int, float)):
-                        st.write(f"**52W High:** ₹{week_52_high:.2f}")
-                    else:
-                        st.write(f"**52W High:** {week_52_high}")
-                    
-                    week_52_low = rec.get('week_52_low', 'N/A')
-                    if week_52_low != 'N/A' and isinstance(week_52_low, (int, float)):
-                        st.write(f"**52W Low:** ₹{week_52_low:.2f}")
-                    else:
-                        st.write(f"**52W Low:** {week_52_low}")
-                    
+                    st.write(f"**52W High:** {rec.get('week_52_high', 'N/A')}")
+                    st.write(f"**52W Low:** {rec.get('week_52_low', 'N/A')}")
                     st.write(f"**Volume:** {rec.get('volume', 'N/A')}")
                     st.write(f"**Avg Volume:** {rec.get('avg_volume', 'N/A')}")
                     st.write(f"**Dividend Yield:** {rec.get('dividend_yield', 'N/A')}")

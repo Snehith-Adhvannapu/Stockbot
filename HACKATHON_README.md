@@ -43,14 +43,14 @@
 ---
 
 ## 👥 Team Details
-**Team Name:** `Your Team Name Here`
+**Team Name:** `Arise`
 
 | Name | Role | Email |
 |---|---:|---|
-| Member 1 Name| Team Lead | member1@example.com |
-| Member 2 Name| Team Member| member2@example.com |
-| Member 3 Name| Team Member | member3@example.com |(Optional)
-| Member 4 Name| Team Member | member4@example.com |(Optional)
+| Snehith Adhvannapu| Lead Developer & System Architect | 2511cs020684@mallareddyuniversity.ac.in |
+| KOPPULA YUVARAJ KUMAR REDDY | AI & Data Intelligence Engineer| 2511CS010714@mallareddyuniversity.ac.in |
+| Ch venkata nandini| NLP & Sentiment Analysis Engineer | 2511cs020134@mallareddyuniversity.ac.in|
+| Khaja aftab Hussain | Frontend & Visualization Developer |  2511CS020686@mallareddyuniversity.ac.in |
 
 ---
 

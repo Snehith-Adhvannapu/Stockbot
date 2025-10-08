@@ -3,7 +3,7 @@
 Setup script for AI Stock Advisor
 This script helps set up the project environment and dependencies
 """
-
+#
 import subprocess
 import sys
 import os

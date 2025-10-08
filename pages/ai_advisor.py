@@ -169,17 +169,32 @@ def show():
                 
                 all_results = []
                 
+                # USD to INR conversion rate (you can make this dynamic via an API if needed)
+                usd_to_inr = 83.0  # Approximate rate
+                
                 for idx, stock in enumerate(stocks_to_analyze):
                     if analysis_mode == "sector" and "(India)" in display_name:
                         symbol = f"{stock}.NS"
+                        is_indian = True
                     else:
                         symbol = stock
+                        is_indian = False
                     
                     status_text.text(f"Analyzing {stock} ({idx + 1}/{len(stocks_to_analyze)})...")
                     
                     try:
                         sentiment_result = sentiment_agent.analyze_sentiment(symbol, stock)
                         fundamental_result = fundamental_agent.analyze_stock(symbol)
+                        
+                        # Convert USD prices to INR for US stocks
+                        if not is_indian and fundamental_result:
+                            if 'current_price' in fundamental_result and fundamental_result['current_price'] != 'N/A':
+                                fundamental_result['current_price_usd'] = fundamental_result['current_price']
+                                fundamental_result['current_price'] = fundamental_result['current_price'] * usd_to_inr
+                            if 'week_52_high' in fundamental_result and fundamental_result['week_52_high'] != 'N/A':
+                                fundamental_result['week_52_high'] = fundamental_result['week_52_high'] * usd_to_inr
+                            if 'week_52_low' in fundamental_result and fundamental_result['week_52_low'] != 'N/A':
+                                fundamental_result['week_52_low'] = fundamental_result['week_52_low'] * usd_to_inr
                         
                         final_recommendation = aggregator_agent.aggregate_scores(
                             ticker=symbol,
@@ -322,8 +337,12 @@ def show():
                     st.metric("Confidence", f"{confidence:.1f}%")
                 with col4:
                     current_price = rec.get('current_price', 'N/A')
-                    if current_price != 'N/A':
-                        st.metric("Current Price", f"₹{current_price:.2f}" if isinstance(current_price, (int, float)) else current_price)
+                    current_price_usd = analysis.get('fundamental', {}).get('current_price_usd')
+                    if current_price != 'N/A' and isinstance(current_price, (int, float)):
+                        if current_price_usd:
+                            st.metric("Current Price", f"₹{current_price:.2f}", delta=f"${current_price_usd:.2f}")
+                        else:
+                            st.metric("Current Price", f"₹{current_price:.2f}")
                     else:
                         st.metric("Current Price", "N/A")
                 
@@ -347,8 +366,19 @@ def show():
                 with col2:
                     st.markdown("**💰 Valuation & Size**")
                     st.write(f"**Market Cap:** {rec.get('market_cap', 'N/A')}")
-                    st.write(f"**52W High:** {rec.get('week_52_high', 'N/A')}")
-                    st.write(f"**52W Low:** {rec.get('week_52_low', 'N/A')}")
+                    
+                    week_52_high = rec.get('week_52_high', 'N/A')
+                    if week_52_high != 'N/A' and isinstance(week_52_high, (int, float)):
+                        st.write(f"**52W High:** ₹{week_52_high:.2f}")
+                    else:
+                        st.write(f"**52W High:** {week_52_high}")
+                    
+                    week_52_low = rec.get('week_52_low', 'N/A')
+                    if week_52_low != 'N/A' and isinstance(week_52_low, (int, float)):
+                        st.write(f"**52W Low:** ₹{week_52_low:.2f}")
+                    else:
+                        st.write(f"**52W Low:** {week_52_low}")
+                    
                     st.write(f"**Volume:** {rec.get('volume', 'N/A')}")
                     st.write(f"**Avg Volume:** {rec.get('avg_volume', 'N/A')}")
                     st.write(f"**Dividend Yield:** {rec.get('dividend_yield', 'N/A')}")

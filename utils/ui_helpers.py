@@ -44,31 +44,31 @@ def get_theme() -> Dict[str, str]:
 def apply_global_styles():
     """Apply global CSS styles based on current theme"""
     theme = get_theme()
-    
+
     st.markdown(f"""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
+
         * {{
             font-family: 'Inter', sans-serif;
         }}
-        
+
         .stApp {{
             background: {theme['bg_primary']};
         }}
-        
+
         .main {{
             background: {theme['bg_primary']};
             color: {theme['text_primary']};
             animation: fadeInContent 0.3s ease-out;
         }}
-        
+
         .block-container {{
             background: transparent;
             color: {theme['text_primary']};
             animation: fadeInContent 0.3s ease-out;
         }}
-        
+
         @keyframes fadeInContent {{
             from {{
                 opacity: 0;
@@ -79,35 +79,35 @@ def apply_global_styles():
                 transform: translateY(0);
             }}
         }}
-        
+
         section[data-testid="stSidebar"] {{
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }}
-        
+
         [data-testid="stAppViewContainer"] {{
             transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }}
-        
+
         h1, h2, h3, h4, h5, h6 {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         p, label, .stMarkdown {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         [data-testid="stSidebar"] {{
             background: {theme['sidebar_bg']} !important;
         }}
-        
+
         [data-testid="stSidebar"] * {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         [data-testid="stSidebar"] .stMarkdown {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         [data-testid="stSidebar"] button {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
@@ -117,31 +117,31 @@ def apply_global_styles():
             margin-bottom: 0.5rem;
             font-weight: 500;
         }}
-        
+
         [data-testid="stSidebar"] button:hover {{
             background: {theme['bg_secondary']} !important;
             border-color: {theme['accent_primary']} !important;
             transform: translateX(2px);
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }}
-        
+
         [data-testid="stSidebar"] button:active {{
             transform: translateX(0);
         }}
-        
+
         [data-testid="stSidebar"] button[kind="primary"] {{
             background: linear-gradient(135deg, {theme['accent_primary']} 0%, {theme['accent_secondary']} 100%) !important;
             color: white !important;
             border: none !important;
             font-weight: 600;
         }}
-        
+
         [data-testid="stSidebar"] button[kind="secondary"] {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1.5px solid rgba(102, 126, 234, 0.3) !important;
         }}
-        
+
         .stButton button {{
             border-radius: 10px;
             font-weight: 500;
@@ -151,28 +151,28 @@ def apply_global_styles():
             color: {theme['text_primary']};
             border: 1px solid {theme['border']};
         }}
-        
+
         .stButton button:hover {{
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             border-color: {theme['accent_primary']};
         }}
-        
+
         .stButton button:active {{
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0,0,0,0.15);
         }}
-        
+
         .stButton button[kind="primary"] {{
             background: linear-gradient(135deg, {theme['accent_primary']} 0%, {theme['accent_secondary']} 100%);
             color: white;
             border: none;
         }}
-        
+
         .stButton button[kind="primary"]:hover {{
             box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
         }}
-        
+
         .metric-card {{
             background: {theme['card_bg']};
             padding: 1.5rem;
@@ -180,307 +180,307 @@ def apply_global_styles():
             border: 1px solid {theme['border']};
             backdrop-filter: blur(10px);
         }}
-        
+
         .stMetric {{
             background: {theme['card_bg']};
             padding: 1rem;
             border-radius: 10px;
             border: 1px solid {theme['border']};
         }}
-        
+
         .stMetric label {{
             color: {theme['text_secondary']} !important;
         }}
-        
+
         .stMetric [data-testid="stMetricValue"] {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stDataFrame {{
             background: {theme['card_bg']} !important;
             border-radius: 8px;
         }}
-        
+
         .stDataFrame div {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         .stDataFrame table {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stDataFrame th {{
             background: {theme['bg_secondary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         .stDataFrame td {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         [data-testid="stDataFrame"] {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         [data-testid="stDataFrame"] div {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         .dataframe {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         .dataframe thead tr {{
             background: {theme['bg_secondary']} !important;
         }}
-        
+
         .dataframe tbody tr {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         .dataframe th {{
             background: {theme['bg_secondary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         .dataframe td {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         .stTextInput input, .stTextInput input:focus {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
             border-radius: 8px !important;
         }}
-        
+
         .stSelectbox select, .stSelectbox select:focus {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
             border-radius: 8px !important;
         }}
-        
+
         .stMultiSelect {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
             border-radius: 8px !important;
         }}
-        
+
         .stTextArea textarea, .stTextArea textarea:focus {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
             border-radius: 8px !important;
         }}
-        
+
         .stNumberInput input, .stNumberInput input:focus {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
             border-radius: 8px !important;
         }}
-        
+
         .stDateInput input, .stDateInput input:focus {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
             border-radius: 8px !important;
         }}
-        
+
         [data-baseweb="input"] {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         [data-baseweb="select"] {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         [data-baseweb="base-input"] {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         input {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
         }}
-        
+
         textarea {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
         }}
-        
+
         select {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border: 1px solid {theme['border']} !important;
         }}
-        
+
         .stTable {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         .stTable table {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stTable th {{
             background: {theme['bg_secondary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         .stTable td {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         div[data-baseweb="select"] > div {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         div[data-baseweb="select"] {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         div[role="button"][aria-haspopup="listbox"] {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         div[data-baseweb="popover"] {{
             background: {theme['bg_secondary']} !important;
         }}
-        
+
         ul[role="listbox"] {{
             background: {theme['bg_secondary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         li[role="option"] {{
             background: {theme['bg_secondary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         li[role="option"]:hover {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['accent_primary']} !important;
         }}
-        
+
         div[data-baseweb="menu"] {{
             background: {theme['bg_secondary']} !important;
         }}
-        
+
         div[data-baseweb="menu"] li {{
             background: {theme['bg_secondary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         div[data-baseweb="menu"] li:hover {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         .stSelectbox > div > div {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         .stMultiSelect > div > div {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
             border-color: {theme['border']} !important;
         }}
-        
+
         [data-baseweb="tag"] {{
             background: {theme['accent_primary']} !important;
             color: white !important;
         }}
-        
+
         .st-emotion-cache-1gulkj5 {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         .st-emotion-cache-1gulkj5 > div {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         [class*="st-emotion-cache"] div[data-baseweb="select"] {{
             background: {theme['bg_tertiary']} !important;
         }}
-        
+
         [class*="st-emotion-cache"] div[role="button"] {{
             background: {theme['bg_tertiary']} !important;
             color: {theme['text_primary']} !important;
         }}
-        
+
         [data-testid="stMarkdownContainer"] p {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stRadio > div {{
             background: transparent !important;
         }}
-        
+
         .stRadio label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stCheckbox label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stSlider label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stNumberInput label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stTextInput label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stSelectbox label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stMultiSelect label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stTextArea label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .stDateInput label {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         [data-testid="stHeader"] {{
             background: transparent;
         }}
-        
+
         .logo {{
             font-size: 1.5rem;
             font-weight: 700;
@@ -491,11 +491,11 @@ def apply_global_styles():
             text-align: center;
             margin-bottom: 1rem;
         }}
-        
+
         [data-testid="stIconMaterial"] {{
             color: {theme['text_primary']} !important;
         }}
-        
+
         .st-emotion-cache-rw2m0o {{
             color: {theme['text_primary']} !important;
         }}
@@ -506,11 +506,11 @@ def render_sidebar_header():
     """Render sidebar header with logo and controls"""
     theme = get_theme()
     dark_mode = st.session_state.get('dark_mode', True)
-    
+
     st.markdown("<div class='logo'>Algora</div>", unsafe_allow_html=True)
-    
+
     st.markdown("<br>", unsafe_allow_html=True)
-    
+
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("☀️" if dark_mode else "🌙", key="theme_toggle", use_container_width=True):
@@ -521,7 +521,7 @@ def render_sidebar_header():
             st.session_state.selected_mode = None
             st.session_state.selected_page = None
             st.rerun()
-    
+
     st.markdown("---")
 
 def show_success(message: str):
@@ -542,9 +542,26 @@ def show_info(message: str):
     """Display an info message"""
     st.info(f"ℹ️ {message}")
 
-def format_currency(amount: float) -> str:
-    """Format a number as currency in INR"""
-    return f"₹{amount:,.2f}"
+def format_currency(value, is_usd=False, usd_to_inr=83.0):
+    """Format currency values with optional USD to INR conversion"""
+    if value == 'N/A' or value is None:
+        return 'N/A'
+
+    try:
+        num_value = float(value)
+
+        # Convert USD to INR if needed
+        if is_usd:
+            num_value = num_value * usd_to_inr
+
+        if num_value >= 1_00_00_000:
+            return f"₹{num_value/1_00_00_000:.2f} Cr"
+        elif num_value >= 1_00_000:
+            return f"₹{num_value/1_00_000:.2f} L"
+        else:
+            return f"₹{num_value:,.2f}"
+    except:
+        return str(value)
 
 def format_percentage(value: float) -> str:
     """Format a number as percentage"""

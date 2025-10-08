@@ -1,1 +1,2 @@
 {"timestamp": "2025-10-05T19:05:06.082193", "type": "error", "error_type": "initialization", "message": "Failed to get account info: {\"message\": \"unauthorized.\"}\n", "symbol": null}
+{"timestamp": "2025-10-08T15:08:00.579395", "type": "error", "error_type": "initialization", "message": "Failed to get account info: {\"message\": \"unauthorized.\"}\n", "symbol": null}

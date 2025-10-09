@@ -68,7 +68,7 @@
 ---
 
 ## 📹 Demonstration Video
-▶️ [YouTube / Google Drive Link](#)
+▶️ https://drive.google.com/file/d/1CXYzeex3RMo6V6vJFmSxa9k1VdFblIhj/view?usp=sharing
 
 ---
 

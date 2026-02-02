@@ -1,11 +1,5 @@
 
-<!-- AIGNITE Banner (centered) -->
-<div align="center">
-  <h1> AIGNITE 2K25</h1>
-  <p><strong>Powered by MLSC</strong></p>
-</div>
 
----
 
 <p align="center">
   <strong>🚀 Algora - AI Stock Trading Platform</strong><br/>

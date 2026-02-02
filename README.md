@@ -42,15 +42,7 @@
 
 ---
 
-## 👥 Team Details
-**Team Name:** `Arise`
 
-| Name | Role | Email |
-|---|---:|---|
-| Snehith Adhvannapu| Lead Developer & System Architect | 2511cs020684@mallareddyuniversity.ac.in |
-| KOPPULA YUVARAJ KUMAR REDDY | AI & Data Intelligence Engineer| 2511CS010714@mallareddyuniversity.ac.in |
-| Ch venkata nandini| NLP & Sentiment Analysis Engineer | 2511cs020134@mallareddyuniversity.ac.in|
-| Khaja aftab Hussain | Frontend & Visualization Developer |  2511CS020686@mallareddyuniversity.ac.in |
 
 ---
 
